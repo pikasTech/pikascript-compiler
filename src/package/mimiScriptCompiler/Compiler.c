@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "baseObj.h"
 #include "dataStrs.h"
+#include "PyMethodClass.h"
 
 static char *getMimiscriptPythonApiText(char *filePath)
 {
@@ -27,15 +28,17 @@ static void printInfo(char *argName, char *argVal)
 
 static void analizePass(MimiObj *self, char *line, Args *buffs)
 {
+    obj_setStr(self, "currentClassName", "(none)");
 }
 
 static void analizeClass(MimiObj *self, char *line, Args *buffs)
 {
-    char *classSentence = strsRemovePrefix(buffs, line, "class ");
+    char *classSentenceWithBlock = strsRemovePrefix(buffs, line, "class ");
+    char *classSentence = strsDeleteChar(buffs, classSentenceWithBlock, ' ');
     printInfo("classSentence", classSentence);
     char *className = strsGetFirstToken(buffs, classSentence, '(');
     printInfo("className", className);
-    obj_newObj(self, className, "PyObj");
+    obj_newObj(self, className, "PyClass");
 
     char *superClassName = strsCut(buffs, classSentence, '(', ')');
     printInfo("superClassName", superClassName);
@@ -47,6 +50,36 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
 {
     char *currentClassName = obj_getStr(self, "currentClassName");
     printInfo("currentClassName", currentClassName);
+    char *defSentenceWithBlock = strsRemovePrefix(buffs, line, "    def ");
+    char *defSentence = strsDeleteChar(buffs, defSentenceWithBlock, ' ');
+    printInfo("defSentence", defSentence);
+    char *methodName = strsGetFirstToken(buffs, defSentence, '(');
+    printInfo("methodName", methodName);
+    char *methodObjPath = strsAppend(buffs, strsAppend(buffs, currentClassName, "."), methodName);
+    printInfo("methodObjPath", methodObjPath);
+    obj_newObj(self, methodObjPath, "PyMethod");
+    char *returnType = strsCut(buffs, defSentence, '>', ':');
+    printInfo("returnType", returnType);
+    obj_setStr(self, strsAppend(buffs, methodObjPath, ".returnType"), returnType);
+
+    char *typeList = strsCut(buffs, defSentence, '(', ')');
+    printInfo("typeList", typeList);
+    int argNum = strCountSign(typeList, ',') + 1;
+    for (int i = 0; i < argNum; i++)
+    {
+        char *typeDeclearation = strsPopToken(buffs, typeList, ',');
+        printInfo("typeDeclearation", typeDeclearation);
+        char *argName = strsGetFirstToken(buffs, typeDeclearation, ':');
+        printInfo("argName", argName);
+        char *argType = strsGetLastToken(buffs, typeDeclearation, ':');
+        printInfo("argType", argType);
+        obj_setStr(self,
+                   strAppend(strsAppend(buffs,
+                                        methodObjPath,
+                                        "."),
+                             argName),
+                   argType);
+    }
 }
 
 static void analizeLine(MimiObj *self, char *line)

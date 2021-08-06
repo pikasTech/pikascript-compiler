@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include "sysObj.h"
 #include "MimiObj.h"
+#include "dataMemory.h"
 
 #include "CompilerClass.h"
-
+extern DMEM_STATE DMEMS;
 int main()
 {
     char inputBuff[256] = {0};
     MimiObj *msc = newRootObj("msc", New_Compiler);
     obj_run(msc, "build('../mimiscript-python-api/mimiscript-api.py')");
 
-    return 0;
+    printf("memory used most = %d \r\n", DMEMS.maxNum);
+    // return 0;
 
     while (1)
     {

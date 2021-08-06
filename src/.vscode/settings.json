@@ -2,6 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "sysobj.h": "c",
-        "mimiobj.h": "c"
+        "mimiobj.h": "c",
+        "pyobjclass.h": "c"
     }
 }

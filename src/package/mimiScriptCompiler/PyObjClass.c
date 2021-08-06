@@ -5,7 +5,7 @@
 static void setSuper(MimiObj *self, Args *args)
 {
     char *superClassName = args_getStr(args, "superClassName");
-    pyObj_setSuper(self, superClassName);
+    PyObj_setSuper(self, superClassName);
 }
 
 MimiObj *New_PyObj(Args *args)

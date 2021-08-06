@@ -3,7 +3,7 @@
 #include "baseObj.h"
 #include "dataStrs.h"
 
-void pyObj_setSuper(MimiObj *self, char *superClassName)
+void PyObj_setSuper(MimiObj *self, char *superClassName)
 {
     obj_setStr(self, "superClassName", superClassName);
 }
