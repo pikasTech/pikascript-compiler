@@ -10,6 +10,9 @@ int main()
     char inputBuff[256] = {0};
     MimiObj *msc = newRootObj("msc", New_Compiler);
     obj_run(msc, "build('../mimiscript-python-api/mimiscript-api.py')");
+
+    return 0;
+
     while (1)
     {
         fgets(inputBuff, sizeof(inputBuff), stdin);

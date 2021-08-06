@@ -1,3 +1,3 @@
-class TestClass:
+class TestClass(Base):
     def test():
         pass
