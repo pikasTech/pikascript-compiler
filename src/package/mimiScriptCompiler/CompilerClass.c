@@ -15,6 +15,6 @@ MimiObj *New_Compiler(Args *args)
     MimiObj *self = New_MimiObj_sys(args);
     obj_import(self, "PyClass", New_PyObj);
     obj_import(self, "PyMethod", New_PyMethod);
-    class_defineMethod(self, "build(pythonApiPath:string)", buildMethod);
+    class_defineMethod(self, "build(pythonApiPath:str)", buildMethod);
     return self;
 }
