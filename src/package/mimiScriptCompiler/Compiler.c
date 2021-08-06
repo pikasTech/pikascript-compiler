@@ -60,10 +60,17 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
     obj_newObj(self, methodObjPath, "PyMethod");
     char *returnType = strsCut(buffs, defSentence, '>', ':');
     printInfo("returnType", returnType);
-    obj_setStr(self, strsAppend(buffs, methodObjPath, ".returnType"), returnType);
+    if (NULL != returnType)
+    {
+        obj_setStr(self, strsAppend(buffs, methodObjPath, ".returnType"), returnType);
+    }
 
     char *typeList = strsCut(buffs, defSentence, '(', ')');
     printInfo("typeList", typeList);
+    if(0 == strGetSize(typeList))
+    {
+        return;
+    }
     int argNum = strCountSign(typeList, ',') + 1;
     for (int i = 0; i < argNum; i++)
     {
