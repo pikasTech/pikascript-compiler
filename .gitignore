@@ -1,3 +1,6 @@
-*.map
-node_modules/
+*CMakeLists.txt
+*.depend
+*.layout
+*bin/
+*obj/
 !.gitignore
