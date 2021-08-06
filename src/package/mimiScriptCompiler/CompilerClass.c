@@ -10,5 +10,6 @@ static void buildMethod(MimiObj *self, Args *args)
 MimiObj *New_Compiler(Args *args)
 {
     MimiObj *self = New_baseObj(args);
-    class_defineMethod(self, "build(pythonApiPath: string)", buildMethod);
+    class_defineMethod(self, "build(pythonApiPath:string)", buildMethod);
+    return self;
 }

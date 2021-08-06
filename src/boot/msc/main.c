@@ -8,15 +8,14 @@
 int main()
 {
     char inputBuff[256] = {0};
-    MimiObj *root = newRootObj("msc", New_Compiler);
+    MimiObj *msc = newRootObj("msc", New_Compiler);
+    obj_run(msc, "build('../mimiscript-python-api/mimiscript-api.py')");
     while (1)
     {
         fgets(inputBuff, sizeof(inputBuff), stdin);
-        /* get user input */
-        fgets(inputBuff, sizeof(inputBuff), stdin);
 
         /* run mimiScript and get res */
-        Args *resArgs = obj_runDirect(root, inputBuff);
+        Args *resArgs = obj_runDirect(msc, inputBuff);
 
         /* get system output of mimiScript*/
         char *sysOut = args_getStr(resArgs, "sysOut");
