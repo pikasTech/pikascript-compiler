@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "MimiObj.h"
+#include "baseObj.h"
 #include "dataStrs.h"
 
 static char *getMimiscriptPythonApiText(char *filePath)
@@ -20,6 +20,11 @@ static char *getMimiscriptPythonApiText(char *filePath)
     return pyText;
 }
 
+static void printInfo(char *argName, char *argVal)
+{
+    printf("\t\t[info] %s: \"%s\"\r\n", argName, argVal);
+}
+
 static void analizePass(MimiObj *self, char *line, Args *buffs)
 {
 }
@@ -27,13 +32,21 @@ static void analizePass(MimiObj *self, char *line, Args *buffs)
 static void analizeClass(MimiObj *self, char *line, Args *buffs)
 {
     char *classSentence = strsRemovePrefix(buffs, line, "class ");
-    printf("\tclassSentence: %s\r\n", classSentence);
+    printInfo("classSentence", classSentence);
+    char *className = strsGetFirstToken(buffs, classSentence, '(');
+    printInfo("className", className);
+    obj_newObj(self, className, "PyObj");
+
     char *superClassName = strsCut(buffs, classSentence, '(', ')');
-    printf("\tsuperClassName: %s\r\n", superClassName);
+    printInfo("superClassName", superClassName);
+    obj_setStr(self, strsAppend(buffs, className, ".superClassName"), superClassName);
+    obj_setStr(self, "currentClassName", className);
 }
 
 static void analizeDef(MimiObj *self, char *line, Args *buffs)
 {
+    char *currentClassName = obj_getStr(self, "currentClassName");
+    printInfo("currentClassName", currentClassName);
 }
 
 static void analizeLine(MimiObj *self, char *line)
@@ -70,7 +83,7 @@ void compiler_build(MimiObj *self, char *pythonApiPath)
     for (int i = 0; i < lineNum; i++)
     {
         char *line = strsPopToken(buffs, pyTextBuff, '\n');
-        printf("line %d: %s\r\n", i, line);
+        printf("|%d|>>>%s\r\n", i, line);
         analizeLine(self, line);
     }
 }
