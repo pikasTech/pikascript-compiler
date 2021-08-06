@@ -3,22 +3,31 @@
 #include "sysObj.h"
 #include "MimiObj.h"
 
-char * getMimiscriptPythonApiText(char * filePath)
-{
-    FILE *f = fopen(filePath, "rb");
-    fseek(f, 0, SEEK_END);
-    long fsize = ftell(f);
-    fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
-    char *pyText = malloc(fsize + 1);
-    fread(pyText, 1, fsize, f);
-    fclose(f);
-    pyText[fsize] = 0;
-    return pyText;
-}
+#include "CompilerClass.h"
 
 int main()
 {
-    char * pyText = getMimiscriptPythonApiText("../mimiscript-python-api/mimiscript-api.py");
-    printf("%s\r\n", pyText);
-    return 0;
+    char inputBuff[256] = {0};
+    MimiObj *root = newRootObj("msc", New_Compiler);
+    while (1)
+    {
+        fgets(inputBuff, sizeof(inputBuff), stdin);
+        /* get user input */
+        fgets(inputBuff, sizeof(inputBuff), stdin);
+
+        /* run mimiScript and get res */
+        Args *resArgs = obj_runDirect(root, inputBuff);
+
+        /* get system output of mimiScript*/
+        char *sysOut = args_getStr(resArgs, "sysOut");
+
+        if (NULL != sysOut)
+        {
+            /* print out the system output */
+            printf("%s\r\n", sysOut);
+        }
+
+        /* deinit the res */
+        args_deinit(resArgs);
+    }
 }
