@@ -3,6 +3,7 @@
 #include "baseObj.h"
 #include "dataStrs.h"
 #include "PyMethodClass.h"
+#include "generator.h"
 
 static char *getMimiscriptPythonApiText(char *filePath)
 {
@@ -105,142 +106,6 @@ static void analizeLine(MimiObj *self, char *line)
     }
 }
 
-static void generateMethodFun(MimiObj *pyMethod, FILE *fp)
-{
-    MimiObj *pyClass = obj_getPtr(pyMethod, "context");
-    char *className = obj_getStr(pyClass, "name");
-}
-
-void generateOneMethodFun(MimiObj *pyMethod, FILE *fp)
-{
-    generateMethodFun(pyMethod, fp);
-}
-
-void generateOneMethod(MimiObj *pyMethod, FILE *fp)
-{
-    char *methodName = obj_getStr(pyMethod, "name");
-    char *typeList = obj_getStr(pyMethod, "typeList");
-    char *returnType = obj_getStr(pyMethod, "returnType");
-
-    if ((NULL == typeList) && (NULL == returnType))
-    {
-        fprintf(fp, "    class_defineMethod(\"%s()\", %s);\n",
-                methodName,
-                methodName);
-        return;
-    }
-
-    if (NULL == typeList)
-    {
-        fprintf(fp, "    class_defineMethod(\"%s()->%s\", %s);\n", methodName,
-                returnType,
-                methodName);
-        return;
-    }
-
-    if (NULL == returnType)
-    {
-        fprintf(fp, "    class_defineMethod(\"%s(%s)\", %s);\n",
-                methodName,
-                typeList,
-                methodName);
-        return;
-    }
-
-    fprintf(fp, "    class_defineMethod(\"%s(%s)->%s\", %s);\n", methodName,
-            typeList,
-            returnType,
-            methodName);
-    return;
-}
-
-
-int generateEachMethodDefine(Arg *argEach, Args *handleArgs)
-{
-    FILE *fp = args_getPtr(handleArgs, "fp");
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyMethod"))
-    {
-        MimiObj *pyMethod = arg_getPtr(argEach);
-        generateOneMethod(pyMethod, fp);
-    }
-}
-
-static void generateNewFun(MimiObj *pyClass, FILE *fp)
-{
-    char *name = obj_getStr(pyClass, "name");
-    fprintf(fp, "MimiObj *New_%s(Args *args){\n", name);
-    char *superClassName = obj_getStr(pyClass, "superClassName");
-    fprintf(fp, "    self = New_%s(args);\n", superClassName);
-
-    Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, generateEachMethodDefine, handleArgs);
-
-    fprintf(fp, "    return self;\n");
-    fprintf(fp, "}\n", name);
-}
-
-int generateEachMethodFun(Arg *argEach, Args *handleArgs)
-{
-    FILE *fp = args_getPtr(handleArgs, "fp");
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyMethod"))
-    {
-        MimiObj *pyMethod = arg_getPtr(argEach);
-        generateOneMethodFun(pyMethod, fp);
-    }
-}
-
-void gnenrateMethodFun(MimiObj *pyClass, FILE *fp)
-{
-    Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, generateEachMethodFun, handleArgs);
-}
-
-void generateOneClassSourceFile(MimiObj *pyClass)
-{
-    Args *buffs = New_args(NULL);
-    char path[] = "dist/";
-    char *name = obj_getStr(pyClass, "name");
-    char *superClassName = obj_getStr(pyClass, "superClassName");
-    char *fileName = strsAppend(buffs, name, "Class.c");
-    char *filePath = strsAppend(buffs, path, fileName);
-    FILE *fp = fopen(filePath, "w+");
-    fprintf(fp, "#include \"%s.h\"\n", superClassName);
-    fprintf(fp, "#include <stdio.h>\n\n");
-    generateMethodFun(pyClass, fp);
-    generateNewFun(pyClass, fp);
-
-    args_deinit(buffs);
-    fclose(fp);
-}
-
-int gererateEachClassSourceFile(Arg *argEach, Args *haneldArgs)
-{
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyClass"))
-    {
-        MimiObj *pyClass = arg_getPtr(argEach);
-        generateOneClassSourceFile(pyClass);
-    }
-}
-
-void gererateClassSourceFile(MimiObj *self)
-{
-    printf("generating class source file.\r\n");
-    args_foreach(self->attributeList, gererateEachClassSourceFile, NULL);
-}
-
-void gererateClassHeadFile(MimiObj *self)
-{
-}
-
-void gererateImplHeadFile(MimiObj *self)
-{
-}
-
 void compiler_build(MimiObj *self, char *pythonApiPath)
 {
     Args *buffs = New_args(NULL);
@@ -261,7 +126,7 @@ void compiler_build(MimiObj *self, char *pythonApiPath)
     }
     args_deinit(buffs);
 
-    gererateClassSourceFile(self);
+    msc_gererateClassSourceFile(self);
     // gererateClassHeadFile(self);
     // gererateImplHeadFile(self);
 }
