@@ -28,7 +28,6 @@ static void printInfo(char *argName, char *argVal)
 
 static void analizePass(MimiObj *self, char *line, Args *buffs)
 {
-    obj_setStr(self, "currentClassName", "(none)");
 }
 
 static void analizeClass(MimiObj *self, char *line, Args *buffs)
@@ -73,6 +72,7 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
     {
         return;
     }
+    obj_setStr(self, strsAppend(buffs, methodObjPath, ".typeList"), typeList);
     int argNum = strCountSign(typeList, ',') + 1;
     for (int i = 0; i < argNum; i++)
     {
@@ -105,10 +105,53 @@ static void analizeLine(MimiObj *self, char *line)
     }
 }
 
-void generateOneMethod(MimiObj *pyMethod, FILE *fp)
+static void generateMethodFun(MimiObj *pyMethod, FILE *fp)
+{
+
+}
+
+static void generateNewClassFun(MimiObj *pyMethod, FILE *fp)
 {
     char *methodName = obj_getStr(pyMethod, "name");
-    fprintf(fp, "    class_defineMethod(\"%s\", %s);\n", methodName, methodName);
+    char *typeList = obj_getStr(pyMethod, "typeList");
+    char *returnType = obj_getStr(pyMethod, "returnType");
+
+    if ((NULL == typeList) && (NULL == returnType))
+    {
+        fprintf(fp, "    class_defineMethod(\"%s()\", %s);\n",
+                methodName,
+                methodName);
+        return;
+    }
+
+    if (NULL == typeList)
+    {
+        fprintf(fp, "    class_defineMethod(\"%s()->%s\", %s);\n", methodName,
+                returnType,
+                methodName);
+        return;
+    }
+
+    if (NULL == returnType)
+    {
+        fprintf(fp, "    class_defineMethod(\"%s(%s)\", %s);\n",
+                methodName,
+                typeList,
+                methodName);
+        return;
+    }
+
+    fprintf(fp, "    class_defineMethod(\"%s(%s)->%s\", %s);\n", methodName,
+            typeList,
+            returnType,
+            methodName);
+    return;
+}
+
+void generateOneMethod(MimiObj *pyMethod, FILE *fp)
+{
+    generateMethodFun(pyMethod, fp);
+    generateNewClassFun(pyMethod, fp);
 }
 
 int generateEachMethod(Arg *argEach, Args *handleArgs)

@@ -10,5 +10,10 @@ class Test2 (Test):
 
 class Test1 (Test):
     def test():
+        pass
+
     def test2():
+        pass
+
+    def getInfo() -> int:
         pass
