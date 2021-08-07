@@ -20,3 +20,16 @@ class Test1 (Test):
 
     def getPtr(id: int) -> pointer:
         pass
+
+
+class Root (SysObj):
+    def reboot():
+        pass
+
+
+class LED (TinyObj):
+    def on():
+        pass
+
+    def off():
+        pass

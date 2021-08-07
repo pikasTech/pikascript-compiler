@@ -1,5 +1,7 @@
 #include "MimiObj.h"
 #include "BaseObj.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "dataStrs.h"
 #include "PyMethodClass.h"
 
