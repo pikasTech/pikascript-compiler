@@ -107,10 +107,16 @@ static void analizeLine(MimiObj *self, char *line)
 
 static void generateMethodFun(MimiObj *pyMethod, FILE *fp)
 {
-
+    MimiObj *pyClass = obj_getPtr(pyMethod, "context");
+    char *className = obj_getStr(pyClass, "name");
 }
 
-static void generateNewClassFun(MimiObj *pyMethod, FILE *fp)
+void generateOneMethodFun(MimiObj *pyMethod, FILE *fp)
+{
+    generateMethodFun(pyMethod, fp);
+}
+
+void generateOneMethod(MimiObj *pyMethod, FILE *fp)
 {
     char *methodName = obj_getStr(pyMethod, "name");
     char *typeList = obj_getStr(pyMethod, "typeList");
@@ -148,13 +154,8 @@ static void generateNewClassFun(MimiObj *pyMethod, FILE *fp)
     return;
 }
 
-void generateOneMethod(MimiObj *pyMethod, FILE *fp)
-{
-    generateMethodFun(pyMethod, fp);
-    generateNewClassFun(pyMethod, fp);
-}
 
-int generateEachMethod(Arg *argEach, Args *handleArgs)
+int generateEachMethodDefine(Arg *argEach, Args *handleArgs)
 {
     FILE *fp = args_getPtr(handleArgs, "fp");
     char *type = arg_getType(argEach);
@@ -165,27 +166,52 @@ int generateEachMethod(Arg *argEach, Args *handleArgs)
     }
 }
 
-void generateOneClassSourceFile(MimiObj *pyClass)
+static void generateNewFun(MimiObj *pyClass, FILE *fp)
 {
-    Args *buffs = New_args(NULL);
     char *name = obj_getStr(pyClass, "name");
-    char path[] = "dist/";
-    char *fileName = strsAppend(buffs, name, "Class.c");
-    char *filePath = strsAppend(buffs, path, fileName);
-    char *superClassName = obj_getStr(pyClass, "superClassName");
-    FILE *fp = fopen(filePath, "w+");
-    fprintf(fp, "#include \"%s.h\"\n", superClassName);
-    fprintf(fp, "#include <stdio.h>\n\n");
-
     fprintf(fp, "MimiObj *New_%s(Args *args){\n", name);
+    char *superClassName = obj_getStr(pyClass, "superClassName");
     fprintf(fp, "    self = New_%s(args);\n", superClassName);
 
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, generateEachMethod, handleArgs);
+    args_foreach(pyClass->attributeList, generateEachMethodDefine, handleArgs);
 
     fprintf(fp, "    return self;\n");
     fprintf(fp, "}\n", name);
+}
+
+int generateEachMethodFun(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyMethod"))
+    {
+        MimiObj *pyMethod = arg_getPtr(argEach);
+        generateOneMethodFun(pyMethod, fp);
+    }
+}
+
+void gnenrateMethodFun(MimiObj *pyClass, FILE *fp)
+{
+    Args *handleArgs = New_args(NULL);
+    args_setPtr(handleArgs, "fp", fp);
+    args_foreach(pyClass->attributeList, generateEachMethodFun, handleArgs);
+}
+
+void generateOneClassSourceFile(MimiObj *pyClass)
+{
+    Args *buffs = New_args(NULL);
+    char path[] = "dist/";
+    char *name = obj_getStr(pyClass, "name");
+    char *superClassName = obj_getStr(pyClass, "superClassName");
+    char *fileName = strsAppend(buffs, name, "Class.c");
+    char *filePath = strsAppend(buffs, path, fileName);
+    FILE *fp = fopen(filePath, "w+");
+    fprintf(fp, "#include \"%s.h\"\n", superClassName);
+    fprintf(fp, "#include <stdio.h>\n\n");
+    generateMethodFun(pyClass, fp);
+    generateNewFun(pyClass, fp);
 
     args_deinit(buffs);
     fclose(fp);
