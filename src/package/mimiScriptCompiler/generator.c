@@ -7,9 +7,10 @@
 #include "PyMethod.h"
 #include "PyObj.h"
 
-void msc_gererateClassSourceFile(MimiObj *msc)
+void msc_gererateClassSourceFile(MimiObj *msc, char *outputPath)
 {
     printf("generating class source file.\r\n");
+    obj_setStr(msc, "outputPath", outputPath);
     args_foreach(msc->attributeList, pyClass_gererateEachClassSourceFile, NULL);
 }
 

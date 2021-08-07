@@ -2,42 +2,55 @@
 #include <stdlib.h>
 #include "baseObj.h"
 #include "dataStrs.h"
+#include "Compiler.h"
 
 void pyMethod_generateOneMethod(MimiObj *pyMethod, FILE *fp)
 {
+    Args *buffs = New_strBuff();
     char *methodName = obj_getStr(pyMethod, "name");
     char *typeList = obj_getStr(pyMethod, "typeList");
     char *returnType = obj_getStr(pyMethod, "returnType");
 
     if ((NULL == typeList) && (NULL == returnType))
     {
-        fprintf(fp, "    class_defineMethod(\"%s()\", %s);\n",
+        char *defineMethod = args_getBuff(buffs, 512);
+        sprintf(defineMethod, "    class_defineMethod(\"%s()\", %s);\n",
                 methodName,
                 methodName);
-        return;
+        fpusWithInfo(defineMethod, fp);
+        goto exit;
     }
 
     if (NULL == typeList)
     {
-        fprintf(fp, "    class_defineMethod(\"%s()->%s\", %s);\n", methodName,
+        char *defineMethod = args_getBuff(buffs, 512);
+        sprintf(defineMethod, "    class_defineMethod(\"%s()->%s\", %s);\n", methodName,
                 returnType,
                 methodName);
-        return;
+        fpusWithInfo(defineMethod, fp);
+        goto exit;
     }
 
     if (NULL == returnType)
     {
-        fprintf(fp, "    class_defineMethod(\"%s(%s)\", %s);\n",
+        char *defineMethod = args_getBuff(buffs, 512);
+        sprintf(defineMethod, "    class_defineMethod(\"%s(%s)\", %s);\n",
                 methodName,
                 typeList,
                 methodName);
-        return;
+        fpusWithInfo(defineMethod, fp);
+        goto exit;
     }
 
-    fprintf(fp, "    class_defineMethod(\"%s(%s)->%s\", %s);\n", methodName,
+    char *defineMethod = args_getBuff(buffs, 512);
+    sprintf(defineMethod, "    class_defineMethod(\"%s(%s)->%s\", %s);\n", methodName,
             typeList,
             returnType,
             methodName);
+    fpusWithInfo(defineMethod, fp);
+    goto exit;
+exit:
+    args_deinit(buffs);
     return;
 }
 
@@ -70,4 +83,3 @@ int pyMethod_generateEachMethodFun(Arg *argEach, Args *handleArgs)
         pyMethod_generateOneMethod(pyMethod, fp);
     }
 }
-

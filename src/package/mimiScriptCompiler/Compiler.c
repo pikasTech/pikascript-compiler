@@ -7,8 +7,14 @@
 #include "dataStrs.h"
 #include "PyMethodClass.h"
 
-void compiler_build(MimiObj *msc, char *pythonApiPath)
+void fpusWithInfo(char *string, FILE *fp)
+{
+    fputs(string, fp);
+    printf("%s", string);
+}
+
+void compiler_build(MimiObj *msc, char *pythonApiPath, char *outputPath)
 {
     msc_analizeFile(msc, pythonApiPath);
-    msc_gererateClassSourceFile(msc);
+    msc_gererateClassSourceFile(msc, outputPath);
 }
