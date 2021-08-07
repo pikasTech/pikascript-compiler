@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include "BaseObj.h"
 
+void Test1_getPtrMethod(MimiObj *self, Args *args){
+    void * res = Test1_getPtr(self);
+    method_returnPtr(args, res);
+}
+
 void Test1_getInfoMethod(MimiObj *self, Args *args){
     int res = Test1_getInfo(self);
     method_returnInt(args, res);
@@ -19,6 +24,7 @@ void Test1_testMethod(MimiObj *self, Args *args){
 
 MimiObj *New_Test1(Args *args){
     MimiObj *self = New_Test(args);
+    class_defineMethod(self, "getPtr(id:int)->pointer", Test1_getPtrMethod);
     class_defineMethod(self, "getInfo()->int", Test1_getInfoMethod);
     class_defineMethod(self, "test2()", Test1_test2Method);
     class_defineMethod(self, "test()", Test1_testMethod);
