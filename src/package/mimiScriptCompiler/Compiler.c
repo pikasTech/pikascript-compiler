@@ -58,6 +58,8 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
     char *methodObjPath = strsAppend(buffs, strsAppend(buffs, currentClassName, "."), methodName);
     printInfo("methodObjPath", methodObjPath);
     obj_newObj(self, methodObjPath, "PyMethod");
+    /* init methodObjPath object directly */
+    obj_getObj(self, methodObjPath, 0);
     char *returnType = strsCut(buffs, defSentence, '>', ':');
     printInfo("returnType", returnType);
     if (NULL != returnType)
@@ -67,7 +69,7 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
 
     char *typeList = strsCut(buffs, defSentence, '(', ')');
     printInfo("typeList", typeList);
-    if(0 == strGetSize(typeList))
+    if (0 == strGetSize(typeList))
     {
         return;
     }
@@ -80,12 +82,7 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
         printInfo("argName", argName);
         char *argType = strsGetLastToken(buffs, typeDeclearation, ':');
         printInfo("argType", argType);
-        obj_setStr(self,
-                   strAppend(strsAppend(buffs,
-                                        methodObjPath,
-                                        "."),
-                             argName),
-                   argType);
+        obj_setStr(self, strAppend(strsAppend(buffs, methodObjPath, "."), argName), argType);
     }
 }
 
@@ -108,6 +105,73 @@ static void analizeLine(MimiObj *self, char *line)
     }
 }
 
+void generateOneMethod(MimiObj *pyMethod, FILE *fp)
+{
+    char *methodName = obj_getStr(pyMethod, "name");
+    fprintf(fp, "    class_defineMethod(\"%s\", %s);\n", methodName, methodName);
+}
+
+int generateEachMethod(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyMethod"))
+    {
+        MimiObj *pyMethod = arg_getPtr(argEach);
+        generateOneMethod(pyMethod, fp);
+    }
+}
+
+void generateOneClassSourceFile(MimiObj *pyClass)
+{
+    Args *buffs = New_args(NULL);
+    char *name = obj_getStr(pyClass, "name");
+    char path[] = "dist/";
+    char *fileName = strsAppend(buffs, name, "Class.c");
+    char *filePath = strsAppend(buffs, path, fileName);
+    char *superClassName = obj_getStr(pyClass, "superClassName");
+    FILE *fp = fopen(filePath, "w+");
+    fprintf(fp, "#include \"%s.h\"\n", superClassName);
+    fprintf(fp, "#include <stdio.h>\n\n");
+
+    fprintf(fp, "MimiObj *New_%s(Args *args){\n", name);
+    fprintf(fp, "    self = New_%s(args);\n", superClassName);
+
+    Args *handleArgs = New_args(NULL);
+    args_setPtr(handleArgs, "fp", fp);
+    args_foreach(pyClass->attributeList, generateEachMethod, handleArgs);
+
+    fprintf(fp, "    return self;\n");
+    fprintf(fp, "}\n", name);
+
+    args_deinit(buffs);
+    fclose(fp);
+}
+
+int gererateEachClassSourceFile(Arg *argEach, Args *haneldArgs)
+{
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyClass"))
+    {
+        MimiObj *pyClass = arg_getPtr(argEach);
+        generateOneClassSourceFile(pyClass);
+    }
+}
+
+void gererateClassSourceFile(MimiObj *self)
+{
+    printf("generating class source file.\r\n");
+    args_foreach(self->attributeList, gererateEachClassSourceFile, NULL);
+}
+
+void gererateClassHeadFile(MimiObj *self)
+{
+}
+
+void gererateImplHeadFile(MimiObj *self)
+{
+}
+
 void compiler_build(MimiObj *self, char *pythonApiPath)
 {
     Args *buffs = New_args(NULL);
@@ -126,4 +190,9 @@ void compiler_build(MimiObj *self, char *pythonApiPath)
         printf("|%d|>>>%s\r\n", i, line);
         analizeLine(self, line);
     }
+    args_deinit(buffs);
+
+    gererateClassSourceFile(self);
+    // gererateClassHeadFile(self);
+    // gererateImplHeadFile(self);
 }

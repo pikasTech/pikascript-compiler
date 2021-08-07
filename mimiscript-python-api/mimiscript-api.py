@@ -1,14 +1,14 @@
-class TestClass (Base):
-    def test(val1: string, val2: int) -> float:
+class Test (BaseObj):
+    def test(val1: str, val2: int) -> float:
         pass
 
 
-class TestClass2 (TestClass):
+class Test2 (Test):
     def test(val1: float, val2: int):
         pass
 
 
-class TestClass1 (TestClass):
+class Test1 (Test):
     def test():
     def test2():
         pass
