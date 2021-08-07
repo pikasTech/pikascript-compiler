@@ -1,5 +1,6 @@
 #include "baseObj.h"
 #include "sysObj.h"
+#include "dataStrs.h"
 #include "Compiler.h"
 #include "PyMethod.h"
 #include <stdio.h>
