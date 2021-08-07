@@ -19,7 +19,14 @@ static void setSuper(MimiObj *self, Args *args)
     PyObj_setSuper(self, superClassName);
 }
 
-static void pyClass_generateNewFun(MimiObj *pyClass, FILE *fp)
+static void pyClass_writeMethodFun(MimiObj *pyClass, FILE *fp)
+{
+    Args *handleArgs = New_args(NULL);
+    args_setPtr(handleArgs, "fp", fp);
+    args_foreach(pyClass->attributeList, pyMetod_writeEachMethodFun, handleArgs);
+}
+
+static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
 {
     char *name = obj_getStr(pyClass, "name");
     Args *buffs = New_strBuff();
@@ -37,7 +44,7 @@ static void pyClass_generateNewFun(MimiObj *pyClass, FILE *fp)
 
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMethod_generateEachMethodDefine, handleArgs);
+    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDefine, handleArgs);
 
     sprintf(returnCmd, "    return self;\n");
     sprintf(endLine, "}\n", name);
@@ -46,27 +53,34 @@ static void pyClass_generateNewFun(MimiObj *pyClass, FILE *fp)
     fpusWithInfo(endLine, fp);
 }
 
-void pyClass_gnenrateMethodFun(MimiObj *pyClass, FILE *fp)
+void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMethod_generateEachMethodFun, handleArgs);
+    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDefine, handleArgs);
 }
 
-void pyClass_generateOneClassSourceFile(MimiObj *pyClass, char *path)
+/* main operation */
+void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
     char *name = obj_getStr(pyClass, "name");
     char *superClassName = obj_getStr(pyClass, "superClassName");
     char *fileName = strsAppend(buffs, name, "Class.c");
     char *filePath = strsAppend(buffs, path, fileName);
+    char *includeSuperClass = args_getBuff(buffs, 512);
+    char *includeImpl = args_getBuff(buffs, 512);
+
     FILE *fp = fopen(filePath, "w+");
     printf("\n--------[%s]--------\n", filePath);
-    char *includeSuperClass = args_getBuff(buffs, 512);
     sprintf(includeSuperClass, "#include \"%s.h\"\n", superClassName);
+    sprintf(includeImpl, "#include \"%s.h\"\n", name);
     fpusWithInfo(includeSuperClass, fp);
+    fpusWithInfo(includeImpl, fp);
     fpusWithInfo("#include <stdio.h>\n\n", fp);
-    pyClass_generateNewFun(pyClass, fp);
+
+    pyClass_writeMethodFun(pyClass, fp);
+    pyClass_writeNewFun(pyClass, fp);
 
     args_deinit(buffs);
     fclose(fp);
@@ -80,7 +94,7 @@ int pyClass_gererateEachClassSourceFile(Arg *argEach, Args *haneldArgs)
         MimiObj *pyClass = arg_getPtr(argEach);
         MimiObj *msc = obj_getPtr(pyClass, "context");
         char *outputPath = obj_getStr(msc, "outputPath");
-        pyClass_generateOneClassSourceFile(pyClass, outputPath);
+        pyClass_writeOneClassSourceFile(pyClass, outputPath);
     }
 }
 
