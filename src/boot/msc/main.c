@@ -12,7 +12,10 @@ int main()
     MimiObj *msc = newRootObj("msc", New_Compiler);
     obj_run(msc, "build('../mimiscript-python-api/mimiscript-api.py', 'dist/')");
 
-    printf("memory used max = %0.2fKb \r\n", DMEMS.maxNum * DMEM_BLOCK_SIZE / 1024.0);
+    float dmemBlockNum = DMEM_BLOCK_NUM;
+    printf("memory used max = %0.2fKb (%0.2f%) \r\n",
+           DMEMS.maxNum * DMEM_BLOCK_SIZE / 1024.0,
+           DMEMS.maxNum / dmemBlockNum * 100.0);
     printf("memory request times = %d \r\n", DMEMS.reqTimes);
     return 0;
 
