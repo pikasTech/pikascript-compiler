@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "sysObj.h"
+#include "SysObj.h"
 #include "MimiObj.h"
 #include "dataMemory.h"
 

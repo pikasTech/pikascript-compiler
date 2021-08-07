@@ -1,5 +1,5 @@
-#include "baseObj.h"
-#include "sysObj.h"
+#include "BaseObj.h"
+#include "SysObj.h"
 #include "Compiler.h"
 #include "PyObjClass.h"
 #include "PyMethodClass.h"

@@ -1,5 +1,5 @@
-#include "baseObj.h"
-#include "sysObj.h"
+#include "BaseObj.h"
+#include "SysObj.h"
 #include "Compiler.h"
 
 MimiObj *New_PyMethod(Args *args)

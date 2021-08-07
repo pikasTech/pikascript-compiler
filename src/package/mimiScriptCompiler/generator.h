@@ -1,3 +1,3 @@
 #include "MimiObj.h"
 
-void msc_gererateClassSourceFile(MimiObj *msc, char *distPath);
+void msc_gererateCode(MimiObj *msc, char *distPath);

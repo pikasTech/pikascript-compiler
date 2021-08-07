@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "baseObj.h"
+#include "BaseObj.h"
 #include "dataStrs.h"
 #include "Compiler.h"
 
@@ -16,7 +16,7 @@ void pyMethod_writeOneMethodDefine(MimiObj *pyMethod, FILE *fp)
     if ((NULL == typeList) && (NULL == returnType))
     {
         char *defineMethod = args_getBuff(buffs, 512);
-        sprintf(defineMethod, "    class_defineMethod(\"%s()\", %s_%sFun);\n",
+        sprintf(defineMethod, "    class_defineMethod(self, \"%s()\", %s_%sMethod);\n",
                 methodName,
                 className,
                 methodName);
@@ -27,7 +27,7 @@ void pyMethod_writeOneMethodDefine(MimiObj *pyMethod, FILE *fp)
     if (NULL == typeList)
     {
         char *defineMethod = args_getBuff(buffs, 512);
-        sprintf(defineMethod, "    class_defineMethod(\"%s()->%s\", %s_%sFun);\n", methodName,
+        sprintf(defineMethod, "    class_defineMethod(self, \"%s()->%s\", %s_%sMethod);\n", methodName,
                 returnType,
                 className,
                 methodName);
@@ -38,7 +38,7 @@ void pyMethod_writeOneMethodDefine(MimiObj *pyMethod, FILE *fp)
     if (NULL == returnType)
     {
         char *defineMethod = args_getBuff(buffs, 512);
-        sprintf(defineMethod, "    class_defineMethod(\"%s(%s)\", %s_%sFun);\n",
+        sprintf(defineMethod, "    class_defineMethod(self, \"%s(%s)\", %s_%sMethod);\n",
                 methodName,
                 typeList,
                 className,
@@ -48,7 +48,7 @@ void pyMethod_writeOneMethodDefine(MimiObj *pyMethod, FILE *fp)
     }
 
     char *defineMethod = args_getBuff(buffs, 512);
-    sprintf(defineMethod, "    class_defineMethod(\"%s(%s)->%s\", %s_%sFun);\n", methodName,
+    sprintf(defineMethod, "    class_defineMethod(self, \"%s(%s)->%s\", %s_%sMethod);\n", methodName,
             typeList,
             returnType,
             className,
@@ -102,7 +102,6 @@ char *getTypeInC(Args *buffs, char *argType)
 
 char *getGetFunName(Args *buffs, char *argType)
 {
-
     if (strEqu(argType, "int"))
     {
         return strsCopy(buffs, "args_getInt");
@@ -131,22 +130,45 @@ int getArgNum(char *typeList)
     return argNum;
 }
 
+char *getReturnFunName(Args *buffs, char *returnType)
+{
+    if (strEqu(returnType, "int"))
+    {
+        return strsCopy(buffs, "method_returnInt");
+    }
+    if (strEqu(returnType, "float"))
+    {
+        return strsCopy(buffs, "method_returnFloat");
+    }
+    if (strEqu(returnType, "pointer"))
+    {
+        return strsCopy(buffs, "method_returnPtr");
+    }
+    if (strEqu(returnType, "str"))
+    {
+        return strsCopy(buffs, "method_returnStr");
+    }
+    return NULL;
+}
+
 void pyMethod_writeOneMethodFun(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
     MimiObj *pyClass = obj_getPtr(pyMethod, "context");
-    char *methodFunName = args_getBuff(buffs, 256);
     char *className = obj_getStr(pyClass, "name");
     char *methodName = obj_getStr(pyMethod, "name");
     char *typeList = obj_getStr(pyMethod, "typeList");
     char *returnType = obj_getStr(pyMethod, "returnType");
     char *returnTypeInC = getTypeInC(buffs, returnType);
+    char *returnFunName = getReturnFunName(buffs, returnType);
 
-    sprintf(methodFunName, "void %s_%sFun(MimiObj *self, Args *args){\n",
+    char *methodFunName = args_getBuff(buffs, 256);
+    sprintf(methodFunName, "void %s_%sMethod(MimiObj *self, Args *args){\n",
             className,
             methodName);
-    int argNum = getArgNum(typeList);
     fpusWithInfo(methodFunName, fp);
+
+    int argNum = getArgNum(typeList);
 
     char *typeListBuff = strsCopy(buffs, typeList);
     char *localCallArglist = strsCopy(buffs, "");
@@ -173,7 +195,6 @@ void pyMethod_writeOneMethodFun(MimiObj *pyMethod, FILE *fp)
         fpusWithInfo(transferArgCmd, fp);
     }
 
-    char *callLocalFunCmd = args_getBuff(buffs, 256);
     char *devideSign = NULL;
     if (argNum > 0)
     {
@@ -183,7 +204,8 @@ void pyMethod_writeOneMethodFun(MimiObj *pyMethod, FILE *fp)
     {
         devideSign = strsCopy(buffs, "");
     }
-
+    /* get callLocalFunCmd */
+    char *callLocalFunCmd = args_getBuff(buffs, 256);
     if (NULL == returnType)
     {
         sprintf(callLocalFunCmd, "    %s_%s(self%s%s);\n",
@@ -201,8 +223,17 @@ void pyMethod_writeOneMethodFun(MimiObj *pyMethod, FILE *fp)
                 devideSign,
                 localCallArglist);
     }
-
     fpusWithInfo(callLocalFunCmd, fp);
+
+    /* get call method return commond */
+    char *callMethodReturnCmd = args_getBuff(buffs, 256);
+    if (NULL != returnType)
+    {
+        sprintf(callMethodReturnCmd, "    %s(args, res);\n",
+                returnFunName);
+        fpusWithInfo(callMethodReturnCmd, fp);
+    }
+
     fpusWithInfo("}\n\n", fp);
 }
 
