@@ -6,8 +6,8 @@
 
 step1: 拉取项目
 ``` shell
-git clone https://github.com/mimilib/mimiscript
-cd mimiscript
+git clone https://github.com/mimilib/mimiscript-compiler
+cd mimiscript-compiler
 git submodule init && git submodule update
 ```
 step2: 安装编译链
