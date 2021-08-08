@@ -36,6 +36,7 @@ class PyMethod (SysObj):
 
 
 class Compiler(SysObj):
+    # import class only
     PyMethod()
     PyClass()
     PyObj()
@@ -45,5 +46,3 @@ class Compiler(SysObj):
 
     def analizeFile(pythonApiPath: str):
         pass
-
-
