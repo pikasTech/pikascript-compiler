@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "BaseObj.h"
 #include "dataStrs.h"
+#include "common.h"
 #include "PyMethod.h"
 #include "MimiObj.h"
 #include "PyMethod.h"

@@ -1,5 +1,6 @@
 #include "MimiObj.h"
 #include "Compiler.h"
+#include "common.h"
 #include <stdio.h>
 #include <stdlib.h>
 void PyObj_newObj(MimiObj *self, char *objName, char *className, FILE *fp)

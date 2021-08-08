@@ -4,6 +4,7 @@
 #include "MimiObj.h"
 #include "Compiler.h"
 #include "PyMethod.h"
+#include "common.h"
 #include "PyClass.h"
 #include "Compiler.h"
 #include <stdio.h>

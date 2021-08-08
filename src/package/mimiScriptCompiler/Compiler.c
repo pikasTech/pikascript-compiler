@@ -5,13 +5,9 @@
 #include "MimiObj.h"
 #include "BaseObj.h"
 #include "dataStrs.h"
+#include "common.h"
 #include "PyMethod.h"
 
-void fpusWithInfo(char *string, FILE *fp)
-{
-    fputs(string, fp);
-    printf("%s", string);
-}
 
 void compiler_build(MimiObj *msc, char *pythonApiPath, char *outputPath)
 {

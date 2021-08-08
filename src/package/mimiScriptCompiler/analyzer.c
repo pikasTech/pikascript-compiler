@@ -1,5 +1,6 @@
 #include "MimiObj.h"
 #include "BaseObj.h"
+#include "common.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "dataStrs.h"
