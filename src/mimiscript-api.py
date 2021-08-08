@@ -33,3 +33,6 @@ class LED (TinyObj):
 
     def off():
         pass
+
+    def setId(id:int):
+        pass

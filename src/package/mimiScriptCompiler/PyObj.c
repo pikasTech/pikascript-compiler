@@ -23,7 +23,7 @@ static void pyClass_writeMethodFun(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMetod_writeEachMethodFun, handleArgs);
+    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodFun, handleArgs);
 }
 
 static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
@@ -47,7 +47,7 @@ static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
     args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDefine, handleArgs);
 
     sprintf(returnCmd, "    return self;\n");
-    sprintf(endLine, "}\n", name);
+    sprintf(endLine, "}\n");
 
     fpusWithInfo(returnCmd, fp);
     fpusWithInfo(endLine, fp);
@@ -66,7 +66,7 @@ void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
     Args *buffs = New_args(NULL);
     char *name = obj_getStr(pyClass, "name");
     char *superClassName = obj_getStr(pyClass, "superClassName");
-    char *fileName = strsAppend(buffs, name, "Class.c");
+    char *fileName = strsAppend(buffs, name, "-api.c");
     char *filePath = strsAppend(buffs, path, fileName);
     char *includeSuperClass = args_getBuff(buffs, 512);
     char *includeImpl = args_getBuff(buffs, 512);
@@ -89,11 +89,12 @@ void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
     fclose(fp);
 }
 
-void pyClass_writeOneClassHeadFile(MimiObj *pyClass, char *path)
+
+
+void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
     char *name = obj_getStr(pyClass, "name");
-    char *superClassName = obj_getStr(pyClass, "superClassName");
     char *fileName = strsAppend(buffs, name, ".h");
     char *filePath = strsAppend(buffs, path, fileName);
     char *ifndef = args_getBuff(buffs, 512);
@@ -108,6 +109,10 @@ void pyClass_writeOneClassHeadFile(MimiObj *pyClass, char *path)
     fpusWithInfo(ifndef, fp);
     fpusWithInfo(define, fp);
     fpusWithInfo("#include \"MimiObj.h\"\n", fp);
+    Args *handleArgs = New_args(NULL);
+    args_setPtr(handleArgs, "fp", fp);
+    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDeclear, handleArgs);
+
     fpusWithInfo("#endif\n", fp);
 
     args_deinit(buffs);
@@ -124,6 +129,7 @@ int pyClass_gererateClassCode(Arg *argEach, Args *haneldArgs)
         char *outputPath = obj_getStr(msc, "outputPath");
         pyClass_writeOneClassSourceFile(pyClass, outputPath);
     }
+    return 0;
 }
 
 int pyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
@@ -134,8 +140,9 @@ int pyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
         MimiObj *pyClass = arg_getPtr(argEach);
         MimiObj *msc = obj_getPtr(pyClass, "context");
         char *outputPath = obj_getStr(msc, "outputPath");
-        pyClass_writeOneClassHeadFile(pyClass, outputPath);
+        pyClass_writeClassHeadFileMain(pyClass, outputPath);
     }
+    return 0;
 }
 
 MimiObj *New_PyObj(Args *args)

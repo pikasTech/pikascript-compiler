@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include "BaseObj.h"
 
+void LED_setIdMethod(MimiObj *self, Args *args){
+    int id = args_getInt(args, "id");
+    LED_setId(self, id);
+}
+
 void LED_offMethod(MimiObj *self, Args *args){
     LED_off(self);
 }
@@ -14,6 +19,7 @@ void LED_onMethod(MimiObj *self, Args *args){
 
 MimiObj *New_LED(Args *args){
     MimiObj *self = New_TinyObj(args);
+    class_defineMethod(self, "setId(id:int)", LED_setIdMethod);
     class_defineMethod(self, "off()", LED_offMethod);
     class_defineMethod(self, "on()", LED_onMethod);
     return self;

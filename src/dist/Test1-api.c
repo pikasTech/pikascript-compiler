@@ -5,7 +5,8 @@
 #include "BaseObj.h"
 
 void Test1_getPtrMethod(MimiObj *self, Args *args){
-    void * res = Test1_getPtr(self);
+    int id = args_getInt(args, "id");
+    void * res = Test1_getPtr(self, id);
     method_returnPtr(args, res);
 }
 
