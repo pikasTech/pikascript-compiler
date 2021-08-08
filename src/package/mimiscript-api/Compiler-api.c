@@ -9,7 +9,7 @@ static void buildMethod(MimiObj *self, Args *args)
 {
     char *pythonApiPath = args_getStr(args, "pythonApiPath");
     char *outputPath = args_getStr(args, "outputPath");
-    compiler_build(self, pythonApiPath, outputPath);
+    Compiler_build(self, pythonApiPath, outputPath);
 }
 
 MimiObj *New_Compiler(Args *args)
