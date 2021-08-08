@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/../mimiproject/test/test1.bin",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/../mimiproject/test",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

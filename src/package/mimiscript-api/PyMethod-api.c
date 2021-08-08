@@ -1,4 +1,4 @@
-/* Warning!!! Don't modify this file!!!*/
+/* Warning!!! Don't modify this file!!! */
 #include "SysObj.h"
 #include "PyMethod.h"
 #include <stdio.h>

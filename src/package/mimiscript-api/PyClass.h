@@ -1,4 +1,4 @@
-/* Warning!!! Don't modify this file!!!*/
+/* Warning!!! Don't modify this file!!! */
 #ifndef __PyClass__H
 #define __PyClass__H
 #include "MimiObj.h"

@@ -1,4 +1,4 @@
-/* Warning!!! Don't modify this file!!!*/
+/* Warning!!! Don't modify this file!!! */
 #ifndef __PyMethod__H
 #define __PyMethod__H
 #include "MimiObj.h"

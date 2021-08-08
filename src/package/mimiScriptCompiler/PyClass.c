@@ -6,6 +6,7 @@
 #include "PyMethod.h"
 #include "common.h"
 #include "PyClass.h"
+#include "PyObj.h"
 #include "Compiler.h"
 #include <stdio.h>
 
@@ -49,6 +50,19 @@ int __foreach_PyClass_makeMethodDefine(Arg *argEach, Args *handleArgs)
     }
     return 0;
 }
+
+int __foreach_PyClass_makeNewObj(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyObj"))
+    {
+        MimiObj *pyObj = arg_getPtr(argEach);
+        // PyMethod_makeMethodDefine(pyObj, fp);
+    }
+    return 0;
+}
+
 static void PyClass_makeNewFun(MimiObj *pyClass, FILE *fp)
 {
     char *name = obj_getStr(pyClass, "__name");
@@ -67,6 +81,7 @@ static void PyClass_makeNewFun(MimiObj *pyClass, FILE *fp)
 
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
+    args_foreach(pyClass->attributeList, __foreach_PyClass_makeNewObj, handleArgs);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDefine, handleArgs);
 
     sprintf(returnCmd, "    return self;\n");
@@ -84,6 +99,24 @@ void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDefine, handleArgs);
 }
 
+int __foreach_PyClass_makeImportInclude(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyObj"))
+    {
+        MimiObj *pyObj = arg_getPtr(argEach);
+        PyObj_makeInlcude(pyObj, fp);
+    }
+    return 0;
+}
+static void PyClass_makeImportInclude(MimiObj *pyClass, FILE *fp)
+{
+    Args *handleArgs = New_args(NULL);
+    args_setPtr(handleArgs, "fp", fp);
+    args_foreach(pyClass->attributeList, __foreach_PyClass_makeImportInclude, handleArgs);
+}
+
 /* main operation */
 void PyClass_makeApi(MimiObj *pyClass, char *path)
 {
@@ -99,11 +132,12 @@ void PyClass_makeApi(MimiObj *pyClass, char *path)
     printf("\n--------[%s]--------\n", filePath);
     sprintf(includeSuperClass, "#include \"%s.h\"\n", superClassName);
     sprintf(includeImpl, "#include \"%s.h\"\n", name);
-    fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
+    fpusWithInfo("/* Warning!!! Don't modify this file!!! */\n", fp);
     fpusWithInfo(includeSuperClass, fp);
     fpusWithInfo(includeImpl, fp);
     fpusWithInfo("#include <stdio.h>\n", fp);
     fpusWithInfo("#include \"BaseObj.h\"\n", fp);
+    PyClass_makeImportInclude(pyClass, fp);
     fpusWithInfo("\n", fp);
 
     PyClass_makeMethodFun(pyClass, fp);
@@ -138,7 +172,7 @@ void PyClass_makeHead(MimiObj *pyClass, char *path)
     printf("\n--------[%s]--------\n", filePath);
     FILE *fp = fopen(filePath, "w+");
 
-    fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
+    fpusWithInfo("/* Warning!!! Don't modify this file!!! */\n", fp);
     sprintf(ifndef, "#ifndef __%s__H\n", name);
     sprintf(define, "#define __%s__H\n", name);
 

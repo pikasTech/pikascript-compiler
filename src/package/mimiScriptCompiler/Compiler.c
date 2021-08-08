@@ -6,6 +6,7 @@
 #include "dataStrs.h"
 #include "common.h"
 #include "PyMethod.h"
+#include "PyClass.h"
 
 int __foreach_msc_makeApi(Arg *argEach, Args *haneldArgs)
 {
