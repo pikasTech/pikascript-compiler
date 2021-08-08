@@ -1,8 +1,8 @@
 class PyObj(TinyObj):
-    def importCLass(className: str):
-        pas
+    def importCLass(className: str, fp:FILE):
+        pass
 
-    def newObj(objName: str, className: str):
+    def newObj(objName: str, className: str, fp:FILE):
         pass
 
 

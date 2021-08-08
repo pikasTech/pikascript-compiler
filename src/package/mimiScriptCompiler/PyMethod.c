@@ -94,7 +94,7 @@ char *getTypeInC(Args *buffs, char *argType)
     {
         return strsCopy(buffs, "void");
     }
-    return NULL;
+    return strsAppend(buffs, argType, " *");
 }
 
 char *getGetFunName(Args *buffs, char *argType)
@@ -115,7 +115,7 @@ char *getGetFunName(Args *buffs, char *argType)
     {
         return strsCopy(buffs, "args_getStr");
     }
-    return NULL;
+    return strsCopy(buffs, "args_getPtr");
 }
 
 int getArgNum(char *typeList)
@@ -146,7 +146,7 @@ char *getReturnFunName(Args *buffs, char *returnType)
     {
         return strsCopy(buffs, "method_returnStr");
     }
-    return NULL;
+    return strsCopy(buffs, "method_returnPtr");
 }
 
 void pyMethod_writeMethodFunMain(MimiObj *pyMethod, FILE *fp)

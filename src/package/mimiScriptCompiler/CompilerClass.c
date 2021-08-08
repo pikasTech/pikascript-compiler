@@ -3,6 +3,7 @@
 #include "Compiler.h"
 #include "PyClass.h"
 #include "PyMethodClass.h"
+#include "PyObj.h"
 
 static void buildMethod(MimiObj *self, Args *args)
 {
@@ -16,6 +17,7 @@ MimiObj *New_Compiler(Args *args)
     MimiObj *self = New_SysObj(args);
     obj_import(self, "PyClass", New_PyClass);
     obj_import(self, "PyMethod", New_PyMethod);
+    obj_import(self, "PyObj", New_PyObj);
     class_defineMethod(self, "build(pythonApiPath:str,outputPath:str)", buildMethod);
     return self;
 }

@@ -7,17 +7,19 @@
 void PyObj_newObjMethod(MimiObj *self, Args *args){
     char * objName = args_getStr(args, "objName");
     char * className = args_getStr(args, "className");
-    PyObj_newObj(self, objName ,className);
+    FILE * fp = args_getPtr(args, "fp");
+    PyObj_newObj(self, objName ,className ,fp);
 }
 
 void PyObj_importCLassMethod(MimiObj *self, Args *args){
     char * className = args_getStr(args, "className");
-    PyObj_importCLass(self, className);
+    FILE * fp = args_getPtr(args, "fp");
+    PyObj_importCLass(self, className ,fp);
 }
 
 MimiObj *New_PyObj(Args *args){
     MimiObj *self = New_TinyObj(args);
-    class_defineMethod(self, "newObj(objName:str,className:str)", PyObj_newObjMethod);
-    class_defineMethod(self, "importCLass(className:str)", PyObj_importCLassMethod);
+    class_defineMethod(self, "newObj(objName:str,className:str,fp:FILE)", PyObj_newObjMethod);
+    class_defineMethod(self, "importCLass(className:str,fp:FILE)", PyObj_importCLassMethod);
     return self;
 }

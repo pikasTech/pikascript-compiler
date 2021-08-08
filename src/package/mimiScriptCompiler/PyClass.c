@@ -109,6 +109,8 @@ void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
     fpusWithInfo(ifndef, fp);
     fpusWithInfo(define, fp);
     fpusWithInfo("#include \"MimiObj.h\"\n", fp);
+    fpusWithInfo("#include <stdio.h>\n", fp);
+    fpusWithInfo("#include <stdlib.h>\n", fp);
 
     sprintf(newFunDeclearation, "MimiObj *New_%s(Args *args);\n", name);
     fpusWithInfo(newFunDeclearation, fp);
@@ -123,7 +125,7 @@ void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
     fclose(fp);
 }
 
-int pyClass_gererateClassCode(Arg *argEach, Args *haneldArgs)
+int PyClass_gererateClassCode(Arg *argEach, Args *haneldArgs)
 {
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyClass"))
@@ -136,7 +138,7 @@ int pyClass_gererateClassCode(Arg *argEach, Args *haneldArgs)
     return 0;
 }
 
-int pyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
+int PyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
 {
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyClass"))
