@@ -19,13 +19,35 @@ static void setSuper(MimiObj *self, Args *args)
     PyClass_setSuper(self, superClassName);
 }
 
+int __foreach_pyMethod_writeEachMethodFun(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyMethod"))
+    {
+        MimiObj *pyMethod = arg_getPtr(argEach);
+        pyMethod_writeMethodFunMain(pyMethod, fp);
+    }
+    return 0;
+}
 static void pyClass_writeMethodFun(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodFun, handleArgs);
+    args_foreach(pyClass->attributeList, __foreach_pyMethod_writeEachMethodFun, handleArgs);
 }
 
+int __foreach_pyMethod_writeEachMethodDefine(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyMethod"))
+    {
+        MimiObj *pyMethod = arg_getPtr(argEach);
+        pyMethod_writeOneMethodDefine(pyMethod, fp);
+    }
+    return 0;
+}
 static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
 {
     char *name = obj_getStr(pyClass, "__name");
@@ -44,7 +66,7 @@ static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
 
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDefine, handleArgs);
+    args_foreach(pyClass->attributeList, __foreach_pyMethod_writeEachMethodDefine, handleArgs);
 
     sprintf(returnCmd, "    return self;\n");
     sprintf(endLine, "}\n");
@@ -57,36 +79,48 @@ void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDefine, handleArgs);
+    args_foreach(pyClass->attributeList, __foreach_pyMethod_writeEachMethodDefine, handleArgs);
 }
 
 /* main operation */
 void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
-    char *name = obj_getStr(pyClass, "__name");
-    char *superClassName = obj_getStr(pyClass, "superClassName");
-    char *fileName = strsAppend(buffs, name, "-api.c");
-    char *filePath = strsAppend(buffs, path, fileName);
-    char *includeSuperClass = args_getBuff(buffs, 512);
-    char *includeImpl = args_getBuff(buffs, 512);
+char *name = obj_getStr(pyClass, "__name");
+char *superClassName = obj_getStr(pyClass, "superClassName");
+char *fileName = strsAppend(buffs, name, "-api.c");
+char *filePath = strsAppend(buffs, path, fileName);
+char *includeSuperClass = args_getBuff(buffs, 512);
+char *includeImpl = args_getBuff(buffs, 512);
 
-    FILE *fp = fopen(filePath, "w+");
-    printf("\n--------[%s]--------\n", filePath);
-    sprintf(includeSuperClass, "#include \"%s.h\"\n", superClassName);
-    sprintf(includeImpl, "#include \"%s.h\"\n", name);
-    fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
-    fpusWithInfo(includeSuperClass, fp);
-    fpusWithInfo(includeImpl, fp);
-    fpusWithInfo("#include <stdio.h>\n", fp);
-    fpusWithInfo("#include \"BaseObj.h\"\n", fp);
-    fpusWithInfo("\n", fp);
+FILE *fp = fopen(filePath, "w+");
+printf("\n--------[%s]--------\n", filePath);
+sprintf(includeSuperClass, "#include \"%s.h\"\n", superClassName);
+sprintf(includeImpl, "#include \"%s.h\"\n", name);
+fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
+fpusWithInfo(includeSuperClass, fp);
+fpusWithInfo(includeImpl, fp);
+fpusWithInfo("#include <stdio.h>\n", fp);
+fpusWithInfo("#include \"BaseObj.h\"\n", fp);
+fpusWithInfo("\n", fp);
 
-    pyClass_writeMethodFun(pyClass, fp);
-    pyClass_writeNewFun(pyClass, fp);
+pyClass_writeMethodFun(pyClass, fp);
+pyClass_writeNewFun(pyClass, fp);
 
-    args_deinit(buffs);
-    fclose(fp);
+args_deinit(buffs);
+fclose(fp);
+}
+
+int __foreach_pyMethod_writeEachMethodDeclear(Arg *argEach, Args *handleArgs)
+{
+    FILE *fp = args_getPtr(handleArgs, "fp");
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyMethod"))
+    {
+        MimiObj *pyMethod = arg_getPtr(argEach);
+        pyMethod_writeMethodDeclearMain(pyMethod, fp);
+    }
+    return 0;
 }
 
 void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
@@ -117,38 +151,12 @@ void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
 
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
-    args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDeclear, handleArgs);
+    args_foreach(pyClass->attributeList, __foreach_pyMethod_writeEachMethodDeclear, handleArgs);
 
     fpusWithInfo("#endif\n", fp);
 
     args_deinit(buffs);
     fclose(fp);
-}
-
-int PyClass_gererateClassCode(Arg *argEach, Args *haneldArgs)
-{
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyClass"))
-    {
-        MimiObj *pyClass = arg_getPtr(argEach);
-        MimiObj *msc = obj_getPtr(pyClass, "__context");
-        char *outputPath = obj_getStr(msc, "outputPath");
-        pyClass_writeOneClassSourceFile(pyClass, outputPath);
-    }
-    return 0;
-}
-
-int PyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
-{
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyClass"))
-    {
-        MimiObj *pyClass = arg_getPtr(argEach);
-        MimiObj *msc = obj_getPtr(pyClass, "__context");
-        char *outputPath = obj_getStr(msc, "outputPath");
-        pyClass_writeClassHeadFileMain(pyClass, outputPath);
-    }
-    return 0;
 }
 
 MimiObj *New_PyClass(Args *args)

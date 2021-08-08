@@ -60,18 +60,6 @@ exit:
     return;
 }
 
-int pyMethod_writeEachMethodDefine(Arg *argEach, Args *handleArgs)
-{
-    FILE *fp = args_getPtr(handleArgs, "fp");
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyMethod"))
-    {
-        MimiObj *pyMethod = arg_getPtr(argEach);
-        pyMethod_writeOneMethodDefine(pyMethod, fp);
-    }
-    return 0;
-}
-
 char *getTypeInC(Args *buffs, char *argType)
 {
     if (strEqu(argType, "int"))
@@ -273,27 +261,4 @@ void pyMethod_writeMethodDeclearMain(MimiObj *pyMethod, FILE *fp)
             typeListInC);
     fpusWithInfo(methodDeclear, fp);
     args_deinit(buffs);
-}
-
-int pyMethod_writeEachMethodDeclear(Arg *argEach, Args *handleArgs)
-{
-    FILE *fp = args_getPtr(handleArgs, "fp");
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyMethod"))
-    {
-        MimiObj *pyMethod = arg_getPtr(argEach);
-        pyMethod_writeMethodDeclearMain(pyMethod, fp);
-    }
-}
-
-int pyMethod_writeEachMethodFun(Arg *argEach, Args *handleArgs)
-{
-    FILE *fp = args_getPtr(handleArgs, "fp");
-    char *type = arg_getType(argEach);
-    if (strEqu(type, "_class-PyMethod"))
-    {
-        MimiObj *pyMethod = arg_getPtr(argEach);
-        pyMethod_writeMethodFunMain(pyMethod, fp);
-    }
-    return 0;
 }
