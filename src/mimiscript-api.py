@@ -33,7 +33,7 @@ class Test1 (Test):
     def getInfo() -> int:
         pass
 
-    def getPtr(id: int) -> pointer:
+    def getPtr(id: int) -> MimiObj:
         pass
 
 
