@@ -4,7 +4,7 @@
         "SysObj.h": "c",
         "mimiobj.h": "c",
         "PyClass.h": "c",
-        "pymethodclass.h": "c",
+        "PyMethod.h": "c",
         "baseobj.h": "c",
         "datamemory.h": "c"
     }

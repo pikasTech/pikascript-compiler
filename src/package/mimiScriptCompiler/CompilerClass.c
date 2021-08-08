@@ -2,7 +2,7 @@
 #include "SysObj.h"
 #include "Compiler.h"
 #include "PyClass.h"
-#include "PyMethodClass.h"
+#include "PyMethod.h"
 #include "PyObj.h"
 
 static void buildMethod(MimiObj *self, Args *args)

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "dataStrs.h"
-#include "PyMethodClass.h"
+#include "PyMethod.h"
 
 static char *getMimiscriptPythonApiText(char *filePath)
 {

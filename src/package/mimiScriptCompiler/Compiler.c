@@ -5,7 +5,7 @@
 #include "MimiObj.h"
 #include "BaseObj.h"
 #include "dataStrs.h"
-#include "PyMethodClass.h"
+#include "PyMethod.h"
 
 void fpusWithInfo(char *string, FILE *fp)
 {

@@ -4,7 +4,7 @@
 #include "dataStrs.h"
 #include "Compiler.h"
 
-void pyMethod_writeOneMethodDefine(MimiObj *pyMethod, FILE *fp)
+void PyMethod_makeMethodDefine(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
     MimiObj *pyClass = obj_getPtr(pyMethod, "__context");
@@ -137,7 +137,7 @@ char *getReturnFunName(Args *buffs, char *returnType)
     return strsCopy(buffs, "method_returnPtr");
 }
 
-void pyMethod_writeMethodFunMain(MimiObj *pyMethod, FILE *fp)
+void PyMethod_makeMethodFun(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
     MimiObj *pyClass = obj_getPtr(pyMethod, "__context");
@@ -243,7 +243,7 @@ char *getTypeListInC(Args *buffs, char *typeList)
     return typeListInC;
 }
 
-void pyMethod_writeMethodDeclearMain(MimiObj *pyMethod, FILE *fp)
+void PyMethod_makeMethodDeclear(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
     MimiObj *pyClass = obj_getPtr(pyMethod, "__context");
