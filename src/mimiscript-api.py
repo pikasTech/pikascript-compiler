@@ -35,10 +35,15 @@ class PyMethod (SysObj):
         pass
 
 
-class Test(BaseObj):
+class Compiler(SysObj):
     PyMethod()
     PyClass()
     PyObj()
-    base = BaseObj()
-    sys = SysObj()
-    tiny = TinyObj()
+
+    def build(pythonApiPath: str, outputPath: str):
+        pass
+
+    def analizeFile(pythonApiPath: str):
+        pass
+
+
