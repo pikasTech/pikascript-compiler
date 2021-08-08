@@ -1,6 +1,10 @@
 class PyObj(TinyObj):
     def importCLass(className: str):
+        pas
+
+    def newObj(objName: str, className: str):
         pass
+
 
 class Test (BaseObj):
     def test(val1: str, val2: int) -> float:
@@ -32,11 +36,11 @@ class Root (SysObj):
 
 
 class LED (TinyObj):
-    def on(id:int, io:int, name:str):
+    def on(id: int, io: int, name: str):
         pass
 
     def off():
         pass
 
-    def setId(id:int):
+    def setId(id: int):
         pass
