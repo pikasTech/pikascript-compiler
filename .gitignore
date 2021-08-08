@@ -3,5 +3,5 @@
 *.layout
 *bin/
 *obj/
-src/dist
+src/dist/
 !.gitignore
