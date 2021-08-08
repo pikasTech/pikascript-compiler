@@ -72,8 +72,6 @@ int pyMethod_writeEachMethodDefine(Arg *argEach, Args *handleArgs)
     return 0;
 }
 
-
-
 char *getTypeInC(Args *buffs, char *argType)
 {
     if (strEqu(argType, "int"))
@@ -238,6 +236,24 @@ void pyMethod_writeMethodFunMain(MimiObj *pyMethod, FILE *fp)
     args_deinit(buffs);
 }
 
+char *getTypeListInC(Args *buffs, char *typeList)
+{
+    char *typeListInC = strsCopy(buffs, "MimiObj *self");
+    int argNum = getArgNum(typeList);
+    char *typeListBuff = strsCopy(buffs, typeList);
+    for (int i = 0; i < argNum; i++)
+    {
+        char *argDefine = strsPopToken(buffs, typeListBuff, ',');
+        char *argNum = strsGetFirstToken(buffs, argDefine, ':');
+        char *argType = strsGetLastToken(buffs, argDefine, ':');
+        char *argTypeInC = getTypeInC(buffs, argType);
+        typeListInC = strsAppend(buffs, typeListInC, ", ");
+        typeListInC = strsAppend(buffs, typeListInC, argTypeInC);
+        typeListInC = strsAppend(buffs, typeListInC, " ");
+        typeListInC = strsAppend(buffs, typeListInC, argNum);
+    }
+    return typeListInC;
+}
 
 void pyMethod_writeMethodDeclearMain(MimiObj *pyMethod, FILE *fp)
 {
@@ -249,7 +265,7 @@ void pyMethod_writeMethodDeclearMain(MimiObj *pyMethod, FILE *fp)
     char *returnType = obj_getStr(pyMethod, "returnType");
     char *methodDeclear = args_getBuff(buffs, 512);
     char *returnTypeInC = getTypeInC(buffs, returnType);
-    char *typeListInC = NULL;
+    char *typeListInC = getTypeListInC(buffs, typeList);
     sprintf(methodDeclear, "%s %s_%s(%s);\n",
             returnTypeInC,
             className,
