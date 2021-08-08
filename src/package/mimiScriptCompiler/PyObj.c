@@ -26,15 +26,20 @@ void PyObj_makeNewObj(MimiObj *self, FILE *fp)
     Args *buffs = New_strBuff();
     char *objName = obj_getStr(self, "name");
     char *className = obj_getStr(self, "class");
+
     char *importCmd = args_getBuff(buffs, 512);
-    char *newObjCmd = args_getBuff(buffs, 512);
     sprintf(importCmd, "    obj_import(self, \"%s\", New_%s);\n",
             className,
             className);
-    sprintf(newObjCmd, "    obj_newObj(self, \"%s\", \"%s\");\n",
-            objName,
-            className);
     fpusWithInfo(importCmd, fp);
-    fpusWithInfo(newObjCmd, fp);
+
+    if (NULL != objName)
+    {
+        char *newObjCmd = args_getBuff(buffs, 512);
+        sprintf(newObjCmd, "    obj_newObj(self, \"%s\", \"%s\");\n",
+                objName,
+                className);
+        fpusWithInfo(newObjCmd, fp);
+    }
     args_deinit(buffs);
 }

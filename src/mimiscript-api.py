@@ -36,6 +36,9 @@ class PyMethod (SysObj):
 
 
 class Test(BaseObj):
+    PyMethod()
+    PyClass()
+    PyObj()
     base = BaseObj()
     sys = SysObj()
     tiny = TinyObj()

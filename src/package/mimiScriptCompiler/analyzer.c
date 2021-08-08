@@ -1,5 +1,6 @@
 #include "MimiObj.h"
 #include "BaseObj.h"
+#include "dataString.h"
 #include "common.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,24 +37,46 @@ static void msc_analizeNew(MimiObj *self, char *line, Args *buffs)
 {
     char *cleanLine = strsDeleteChar(buffs, line, ' ');
     char *currentClassName = obj_getStr(self, "currentClassName");
-    char *pyObjName = strsGetFirstToken(buffs, cleanLine, '=');
-    char *pyClassName = strsCut(buffs, cleanLine, '=', '(');
+    char *pyObjName = NULL;
+    char *pyClassName = NULL;
+    if (strIsContain(cleanLine, '='))
+    {
+        pyObjName = strsGetFirstToken(buffs, cleanLine, '=');
+        pyClassName = strsCut(buffs, cleanLine, '=', '(');
+    }
+    if (!strIsContain(cleanLine, '='))
+    {
+        pyClassName = strsGetFirstToken(buffs, cleanLine, '(');
+    }
 
     printInfo("cleanLine", cleanLine);
     printInfo("currentClassName", currentClassName);
     printInfo("pyObjName", pyObjName);
     printInfo("pyClassName", pyClassName);
+    char *pyObjPath = NULL;
 
-    char *pyObjPath = strsAppend(buffs, strsAppend(buffs, currentClassName, "._new_"), pyObjName);
+    if (NULL != pyObjName)
+    {
+        pyObjPath = strsAppend(buffs, strsAppend(buffs, currentClassName, "._new_"), pyObjName);
+        printInfo("pyObjPath", pyObjPath);
+    }
+    if (NULL == pyObjName)
+    {
+        pyObjPath = strsAppend(buffs, strsAppend(buffs, currentClassName, "._import_"), pyClassName);
+        printInfo("pyObjPath", pyObjPath);
+    }
+
     char *pyClassPath = strsAppend(buffs, strsAppend(buffs, pyObjPath, "."), "class");
-    char *pyNamePath = strsAppend(buffs, strsAppend(buffs, pyObjPath, "."), "name");
-    printInfo("pyObjPath", pyObjPath);
     printInfo("pyClassPath", pyClassPath);
-    printInfo("pyNamePath", pyNamePath);
-
     obj_newObj(self, pyObjPath, "PyObj");
     obj_setStr(self, pyClassPath, pyClassName);
-    obj_setStr(self, pyNamePath, pyObjName);
+
+    if (NULL != pyObjName)
+    {
+        char *pyNamePath = strsAppend(buffs, strsAppend(buffs, pyObjPath, "."), "name");
+        printInfo("pyNamePath", pyNamePath);
+        obj_setStr(self, pyNamePath, pyObjName);
+    }
 }
 
 static void msc_analizeClass(MimiObj *self, char *line, Args *buffs)
@@ -133,7 +156,7 @@ static void msc_analizeLine(MimiObj *self, char *line)
         goto exit;
     }
 
-    if (strIsStartWith(line, "    ") && strIsContain(line, '='))
+    if (strIsStartWith(line, "    ") && strIsContain(line, '(') && strIsContain(line, ')'))
     {
         msc_analizeNew(self, line, buffs);
         goto exit;
