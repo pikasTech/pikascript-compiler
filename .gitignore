@@ -4,4 +4,5 @@
 *bin/
 *obj/
 src/dist/
+src/package/mimiscript-api
 !.gitignore
