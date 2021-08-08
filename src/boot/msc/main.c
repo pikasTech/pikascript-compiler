@@ -17,7 +17,7 @@ int main()
            DMEMS.maxNum * DMEM_BLOCK_SIZE / 1024.0,
            DMEMS.maxNum / dmemBlockNum * 100.0);
     printf("memory request times = %d \r\n", DMEMS.reqTimes);
-    return 0;
+    // return 0;
 
     while (1)
     {

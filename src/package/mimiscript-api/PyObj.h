@@ -6,5 +6,5 @@
 #include <stdlib.h>
 MimiObj *New_PyObj(Args *args);
 void PyObj_newObj(MimiObj *self, char * objName, char * className, FILE * fp);
-void PyObj_importCLass(MimiObj *self, char * className, FILE * fp);
+void PyObj_importClass(MimiObj *self, char * className, FILE * fp);
 #endif

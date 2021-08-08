@@ -27,11 +27,35 @@ static void printInfo(char *argName, char *argVal)
     printf("\t\t[info] %s: \"%s\"\r\n", argName, argVal);
 }
 
-static void analizePass(MimiObj *self, char *line, Args *buffs)
+static void msc_analizePass(MimiObj *self, char *line, Args *buffs)
 {
 }
 
-static void analizeClass(MimiObj *self, char *line, Args *buffs)
+static void msc_analizeNew(MimiObj *self, char *line, Args *buffs)
+{
+    char *cleanLine = strsDeleteChar(buffs, line, ' ');
+    char *currentClassName = obj_getStr(self, "currentClassName");
+    char *pyObjName = strsGetFirstToken(buffs, cleanLine, '=');
+    char *pyClassName = strsCut(buffs, cleanLine, '=', '(');
+
+    printInfo("cleanLine", cleanLine);
+    printInfo("currentClassName", currentClassName);
+    printInfo("pyObjName", pyObjName);
+    printInfo("pyClassName", pyClassName);
+
+    char *pyObjPath = strsAppend(buffs, strsAppend(buffs, currentClassName, "._new_"), pyObjName);
+    char *pyClassPath = strsAppend(buffs, strsAppend(buffs, pyObjPath, "."), "class");
+    char *pyNamePath = strsAppend(buffs, strsAppend(buffs, pyObjPath, "."), "name");
+    printInfo("pyObjPath", pyObjPath);
+    printInfo("pyClassPath", pyClassPath);
+    printInfo("pyNamePath", pyNamePath);
+
+    obj_newObj(self, pyObjPath, "PyObj");
+    obj_setStr(self, pyClassPath, pyClassName);
+    obj_setStr(self, pyNamePath, pyObjName);
+}
+
+static void msc_analizeClass(MimiObj *self, char *line, Args *buffs)
 {
     char *classSentenceWithBlock = strsRemovePrefix(buffs, line, "class ");
     char *classSentence = strsDeleteChar(buffs, classSentenceWithBlock, ' ');
@@ -46,7 +70,7 @@ static void analizeClass(MimiObj *self, char *line, Args *buffs)
     obj_setStr(self, "currentClassName", className);
 }
 
-static void analizeDef(MimiObj *self, char *line, Args *buffs)
+static void msc_analizeDef(MimiObj *self, char *line, Args *buffs)
 {
     char *currentClassName = obj_getStr(self, "currentClassName");
     printInfo("currentClassName", currentClassName);
@@ -87,22 +111,27 @@ static void analizeDef(MimiObj *self, char *line, Args *buffs)
     }
 }
 
-static void analizeLine(MimiObj *self, char *line)
+static void msc_analizeLine(MimiObj *self, char *line)
 {
     Args *buffs = New_args(NULL);
     if (strIsStartWith(line, "class "))
     {
-        return analizeClass(self, line, buffs);
+        return msc_analizeClass(self, line, buffs);
     }
 
     if (strIsStartWith(line, "    def "))
     {
-        return analizeDef(self, line, buffs);
+        return msc_analizeDef(self, line, buffs);
     }
 
     if (strIsStartWith(line, "        pass"))
     {
-        return analizePass(self, line, buffs);
+        return msc_analizePass(self, line, buffs);
+    }
+
+    if (strIsStartWith(line, "    ") && strIsContain(line, '='))
+    {
+        return msc_analizeNew(self, line, buffs);
     }
 }
 
@@ -122,7 +151,7 @@ void msc_analizeFile(MimiObj *msc, char *pythonApiPath)
     {
         char *line = strsPopToken(buffs, pyTextBuff, '\n');
         printf("|%d|>>>%s\r\n", i, line);
-        analizeLine(msc, line);
+        msc_analizeLine(msc, line);
     }
     args_deinit(buffs);
 }

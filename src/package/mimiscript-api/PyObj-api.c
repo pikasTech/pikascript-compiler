@@ -11,15 +11,15 @@ void PyObj_newObjMethod(MimiObj *self, Args *args){
     PyObj_newObj(self, objName ,className ,fp);
 }
 
-void PyObj_importCLassMethod(MimiObj *self, Args *args){
+void PyObj_importClassMethod(MimiObj *self, Args *args){
     char * className = args_getStr(args, "className");
     FILE * fp = args_getPtr(args, "fp");
-    PyObj_importCLass(self, className ,fp);
+    PyObj_importClass(self, className ,fp);
 }
 
 MimiObj *New_PyObj(Args *args){
     MimiObj *self = New_TinyObj(args);
     class_defineMethod(self, "newObj(objName:str,className:str,fp:FILE)", PyObj_newObjMethod);
-    class_defineMethod(self, "importCLass(className:str,fp:FILE)", PyObj_importCLassMethod);
+    class_defineMethod(self, "importClass(className:str,fp:FILE)", PyObj_importClassMethod);
     return self;
 }

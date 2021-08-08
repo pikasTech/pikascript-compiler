@@ -1,15 +1,19 @@
 class PyObj(TinyObj):
-    def importCLass(className: str, fp:FILE):
+    def importClass(className: str, fp:FILE):
         pass
 
     def newObj(objName: str, className: str, fp:FILE):
         pass
 
-
+    
 class Test (BaseObj):
     def test(val1: str, val2: int) -> float:
         pass
 
+class Root (SysObj):
+    test = Test()
+    def reboot():
+        pass
 
 class Test2 (Test):
     def test(val1: float, val2: int):
@@ -30,9 +34,7 @@ class Test1 (Test):
         pass
 
 
-class Root (SysObj):
-    def reboot():
-        pass
+
 
 
 class LED (TinyObj):
