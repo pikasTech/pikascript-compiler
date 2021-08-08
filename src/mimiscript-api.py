@@ -1,3 +1,7 @@
+class PyObj(TinyObj):
+    def importCLass(className: str):
+        pass
+
 class Test (BaseObj):
     def test(val1: str, val2: int) -> float:
         pass
