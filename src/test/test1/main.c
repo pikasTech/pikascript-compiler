@@ -10,7 +10,7 @@ int main()
 {
     char inputBuff[256] = {0};
     MimiObj *msc = newRootObj("msc", New_Compiler);
-    obj_run(msc, "build('../../src/mimiscript-api.py', '../dist/')");
+    obj_run(msc, "build('../../src/mimiscript-api.py', '../../src/dist/')");
 
     float dmemBlockNum = DMEM_BLOCK_NUM;
     printf("memory used max = %0.2fKb (%0.2f%) \r\n",
