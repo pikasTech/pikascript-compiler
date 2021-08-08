@@ -3,6 +3,6 @@
 #include "MimiObj.h"
 void * Test1_getPtr((null));
 int Test1_getInfo((null));
-(null) Test1_test2((null));
-(null) Test1_test((null));
+void Test1_test2((null));
+void Test1_test((null));
 #endif

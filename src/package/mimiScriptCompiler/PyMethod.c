@@ -92,6 +92,10 @@ char *getTypeInC(Args *buffs, char *argType)
     {
         return strsCopy(buffs, "char *");
     }
+    if (NULL == argType)
+    {
+        return strsCopy(buffs, "void");
+    }
     return NULL;
 }
 
