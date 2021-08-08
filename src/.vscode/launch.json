@@ -28,7 +28,7 @@
             "name": "bin",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../mimiproject/bin/msc.bin",
+            "program": "${workspaceFolder}/../mimiproject/bin/cli-msc.bin",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/../mimiproject",
