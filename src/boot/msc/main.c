@@ -4,7 +4,7 @@
 #include "MimiObj.h"
 #include "dataMemory.h"
 
-#include "CompilerClass.h"
+#include "Compiler.h"
 extern DMEM_STATE DMEMS;
 int main()
 {
