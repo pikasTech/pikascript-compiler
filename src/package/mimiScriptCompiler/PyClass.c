@@ -73,6 +73,7 @@ static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
 
     fpusWithInfo(returnCmd, fp);
     fpusWithInfo(endLine, fp);
+    args_deinit(buffs);
 }
 
 void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
@@ -86,29 +87,29 @@ void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
 void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
-char *name = obj_getStr(pyClass, "__name");
-char *superClassName = obj_getStr(pyClass, "superClassName");
-char *fileName = strsAppend(buffs, name, "-api.c");
-char *filePath = strsAppend(buffs, path, fileName);
-char *includeSuperClass = args_getBuff(buffs, 512);
-char *includeImpl = args_getBuff(buffs, 512);
+    char *name = obj_getStr(pyClass, "__name");
+    char *superClassName = obj_getStr(pyClass, "superClassName");
+    char *fileName = strsAppend(buffs, name, "-api.c");
+    char *filePath = strsAppend(buffs, path, fileName);
+    char *includeSuperClass = args_getBuff(buffs, 512);
+    char *includeImpl = args_getBuff(buffs, 512);
 
-FILE *fp = fopen(filePath, "w+");
-printf("\n--------[%s]--------\n", filePath);
-sprintf(includeSuperClass, "#include \"%s.h\"\n", superClassName);
-sprintf(includeImpl, "#include \"%s.h\"\n", name);
-fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
-fpusWithInfo(includeSuperClass, fp);
-fpusWithInfo(includeImpl, fp);
-fpusWithInfo("#include <stdio.h>\n", fp);
-fpusWithInfo("#include \"BaseObj.h\"\n", fp);
-fpusWithInfo("\n", fp);
+    FILE *fp = fopen(filePath, "w+");
+    printf("\n--------[%s]--------\n", filePath);
+    sprintf(includeSuperClass, "#include \"%s.h\"\n", superClassName);
+    sprintf(includeImpl, "#include \"%s.h\"\n", name);
+    fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
+    fpusWithInfo(includeSuperClass, fp);
+    fpusWithInfo(includeImpl, fp);
+    fpusWithInfo("#include <stdio.h>\n", fp);
+    fpusWithInfo("#include \"BaseObj.h\"\n", fp);
+    fpusWithInfo("\n", fp);
 
-pyClass_writeMethodFun(pyClass, fp);
-pyClass_writeNewFun(pyClass, fp);
+    pyClass_writeMethodFun(pyClass, fp);
+    pyClass_writeNewFun(pyClass, fp);
 
-args_deinit(buffs);
-fclose(fp);
+    args_deinit(buffs);
+    fclose(fp);
 }
 
 int __foreach_pyMethod_writeEachMethodDeclear(Arg *argEach, Args *handleArgs)

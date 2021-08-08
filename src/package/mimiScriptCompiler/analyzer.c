@@ -116,23 +116,30 @@ static void msc_analizeLine(MimiObj *self, char *line)
     Args *buffs = New_args(NULL);
     if (strIsStartWith(line, "class "))
     {
-        return msc_analizeClass(self, line, buffs);
+        msc_analizeClass(self, line, buffs);
+        goto exit;
     }
 
     if (strIsStartWith(line, "    def "))
     {
-        return msc_analizeDef(self, line, buffs);
+        msc_analizeDef(self, line, buffs);
+        goto exit;
     }
 
     if (strIsStartWith(line, "        pass"))
     {
-        return msc_analizePass(self, line, buffs);
+        msc_analizePass(self, line, buffs);
+        goto exit;
     }
 
     if (strIsStartWith(line, "    ") && strIsContain(line, '='))
     {
-        return msc_analizeNew(self, line, buffs);
+        msc_analizeNew(self, line, buffs);
+        goto exit;
     }
+exit:
+    args_deinit(buffs);
+    return;
 }
 
 void msc_analizeFile(MimiObj *msc, char *pythonApiPath)
@@ -142,7 +149,7 @@ void msc_analizeFile(MimiObj *msc, char *pythonApiPath)
     if (NULL == pyTextFromFile)
     {
         printf("[error] compiler: load file faild\r\n");
-        return;
+        goto exit;
     }
     char *pyTextBuff = strsCopy(buffs, pyTextFromFile);
     free(pyTextFromFile);
@@ -153,5 +160,7 @@ void msc_analizeFile(MimiObj *msc, char *pythonApiPath)
         printf("|%d|>>>%s\r\n", i, line);
         msc_analizeLine(msc, line);
     }
+exit:
     args_deinit(buffs);
+    return;
 }

@@ -5,6 +5,7 @@
         "mimiobj.h": "c",
         "PyClass.h": "c",
         "pymethodclass.h": "c",
-        "baseobj.h": "c"
+        "baseobj.h": "c",
+        "datamemory.h": "c"
     }
 }
