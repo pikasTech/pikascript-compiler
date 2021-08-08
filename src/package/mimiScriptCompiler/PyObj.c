@@ -21,3 +21,7 @@ void PyObj_makeInlcude(MimiObj *self, FILE *fp)
 
     args_deinit(buffs);
 }
+
+void PyObj_makeNewObj(MimiObj *self, FILE *fp)
+{
+}

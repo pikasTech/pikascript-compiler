@@ -12,6 +12,9 @@ class PyObj(TinyObj):
     def makeInlcude(fp: FILE):
         pass
 
+    def makeNewObj(fp: FILE):
+        pass
+
 
 class PyClass (SysObj):
     def setSuper(superClassName: str):

@@ -58,7 +58,7 @@ int __foreach_PyClass_makeNewObj(Arg *argEach, Args *handleArgs)
     if (strEqu(type, "_class-PyObj"))
     {
         MimiObj *pyObj = arg_getPtr(argEach);
-        // PyMethod_makeMethodDefine(pyObj, fp);
+        PyObj_makeNewObj(pyObj, fp);
     }
     return 0;
 }
