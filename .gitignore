@@ -5,4 +5,6 @@
 *obj/
 src/dist/
 src/package/mimiscript-api
+!src/package/mimiscript-api/PyObj-api.c
+!src/package/mimiscript-api/PyObj.h
 !.gitignore
