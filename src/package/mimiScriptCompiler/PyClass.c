@@ -8,7 +8,7 @@
 #include "Compiler.h"
 #include <stdio.h>
 
-void PyObj_setSuper(MimiObj *self, char *superClassName)
+void PyClass_setSuper(MimiObj *self, char *superClassName)
 {
     obj_setStr(self, "superClassName", superClassName);
 }
@@ -16,7 +16,7 @@ void PyObj_setSuper(MimiObj *self, char *superClassName)
 static void setSuper(MimiObj *self, Args *args)
 {
     char *superClassName = args_getStr(args, "superClassName");
-    PyObj_setSuper(self, superClassName);
+    PyClass_setSuper(self, superClassName);
 }
 
 static void pyClass_writeMethodFun(MimiObj *pyClass, FILE *fp)
@@ -149,7 +149,7 @@ int pyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
     return 0;
 }
 
-MimiObj *New_PyObj(Args *args)
+MimiObj *New_PyClass(Args *args)
 {
     MimiObj *self = New_SysObj(args);
     class_defineMethod(self, "setSuper(superClassName:str)", setSuper);
