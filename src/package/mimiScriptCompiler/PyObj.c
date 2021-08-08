@@ -89,11 +89,10 @@ void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
     fclose(fp);
 }
 
-
-
 void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
+    char *newFunDeclearation = args_getBuff(buffs, 512);
     char *name = obj_getStr(pyClass, "name");
     char *fileName = strsAppend(buffs, name, ".h");
     char *filePath = strsAppend(buffs, path, fileName);
@@ -103,12 +102,17 @@ void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
     printf("\n--------[%s]--------\n", filePath);
     FILE *fp = fopen(filePath, "w+");
 
+    fpusWithInfo("/* Warning!!! Don't modify this file!!!*/\n", fp);
     sprintf(ifndef, "#ifndef __%s__H\n", name);
     sprintf(define, "#define __%s__H\n", name);
 
     fpusWithInfo(ifndef, fp);
     fpusWithInfo(define, fp);
     fpusWithInfo("#include \"MimiObj.h\"\n", fp);
+
+    sprintf(newFunDeclearation, "MimiObj *New_%s(Args *args);\n", name);
+    fpusWithInfo(newFunDeclearation, fp);
+
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
     args_foreach(pyClass->attributeList, pyMethod_writeEachMethodDeclear, handleArgs);
@@ -147,7 +151,7 @@ int pyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
 
 MimiObj *New_PyObj(Args *args)
 {
-    MimiObj *self = New_MimiObj_sys(args);
+    MimiObj *self = New_SysObj(args);
     class_defineMethod(self, "setSuper(superClassName:str)", setSuper);
     return self;
 }

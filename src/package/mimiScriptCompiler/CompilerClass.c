@@ -13,7 +13,7 @@ static void buildMethod(MimiObj *self, Args *args)
 
 MimiObj *New_Compiler(Args *args)
 {
-    MimiObj *self = New_MimiObj_sys(args);
+    MimiObj *self = New_SysObj(args);
     obj_import(self, "PyClass", New_PyObj);
     obj_import(self, "PyMethod", New_PyMethod);
     class_defineMethod(self, "build(pythonApiPath:str,outputPath:str)", buildMethod);

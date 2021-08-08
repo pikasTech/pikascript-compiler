@@ -4,6 +4,6 @@
 
 MimiObj *New_PyMethod(Args *args)
 {
-    MimiObj *self = New_MimiObj_sys(args);
+    MimiObj *self = New_SysObj(args);
     return self;
 }
