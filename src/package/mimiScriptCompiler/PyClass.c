@@ -23,7 +23,8 @@ static void setSuper(MimiObj *self, Args *args)
 
 int __foreach_PyClass_makeMethodFun(Arg *argEach, Args *handleArgs)
 {
-    FILE *fp = args_getPtr(handleArgs, "fp");
+    // FILE *fp = args_getPtr(handleArgs, "fp");
+    FILE *fp = fpNow;
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyMethod"))
     {
@@ -35,13 +36,15 @@ int __foreach_PyClass_makeMethodFun(Arg *argEach, Args *handleArgs)
 static void PyClass_makeMethodFun(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
+    // args_setPtr(handleArgs, "fp", fp);
+    fpNow = fp;
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodFun, handleArgs);
 }
 
 int __foreach_PyClass_makeMethodDefine(Arg *argEach, Args *handleArgs)
 {
-    FILE *fp = args_getPtr(handleArgs, "fp");
+    // FILE *fp = args_getPtr(handleArgs, "fp");
+    FILE *fp = fpNow;
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyMethod"))
     {
@@ -53,7 +56,8 @@ int __foreach_PyClass_makeMethodDefine(Arg *argEach, Args *handleArgs)
 
 int __foreach_PyClass_makeNewObj(Arg *argEach, Args *handleArgs)
 {
-    FILE *fp = args_getPtr(handleArgs, "fp");
+    // FILE *fp = args_getPtr(handleArgs, "fp");
+    FILE *fp = fpNow;
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyObj"))
     {
@@ -80,7 +84,8 @@ static void PyClass_makeNewFun(MimiObj *pyClass, FILE *fp)
     fpusWithInfo(deriveCmd, fp);
 
     Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
+    // args_setPtr(handleArgs, "fp", fp);
+    fpNow = fp;
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeNewObj, handleArgs);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDefine, handleArgs);
 
@@ -95,13 +100,15 @@ static void PyClass_makeNewFun(MimiObj *pyClass, FILE *fp)
 void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
+    // args_setPtr(handleArgs, "fp", fp);
+    fpNow = fp;
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDefine, handleArgs);
 }
 
 int __foreach_PyClass_makeImportInclude(Arg *argEach, Args *handleArgs)
 {
-    FILE *fp = args_getPtr(handleArgs, "fp");
+    // FILE *fp = args_getPtr(handleArgs, "fp");
+    FILE *fp = fpNow;
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyObj"))
     {
@@ -113,7 +120,8 @@ int __foreach_PyClass_makeImportInclude(Arg *argEach, Args *handleArgs)
 static void PyClass_makeImportInclude(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
+    // args_setPtr(handleArgs, "fp", fp);
+    fpNow = fp;
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeImportInclude, handleArgs);
 }
 
@@ -149,7 +157,8 @@ void PyClass_makeApi(MimiObj *pyClass, char *path)
 
 int __foreach_PyClass_makeMethodDeclear(Arg *argEach, Args *handleArgs)
 {
-    FILE *fp = args_getPtr(handleArgs, "fp");
+    // FILE *fp = args_getPtr(handleArgs, "fp");
+    FILE *fp = fpNow;
     char *type = arg_getType(argEach);
     if (strEqu(type, "_class-PyMethod"))
     {
@@ -186,7 +195,8 @@ void PyClass_makeHead(MimiObj *pyClass, char *path)
     fpusWithInfo(newFunDeclearation, fp);
 
     Args *handleArgs = New_args(NULL);
-    args_setPtr(handleArgs, "fp", fp);
+    // args_setPtr(handleArgs, "fp", fp);
+    fpNow = fp;
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDeclear, handleArgs);
 
     fpusWithInfo("#endif\n", fp);
