@@ -235,7 +235,7 @@ void pyMethod_writeMethodFunMain(MimiObj *pyMethod, FILE *fp)
     }
 
     fpusWithInfo("}\n\n", fp);
-    arg_deinit(buffs);
+    args_deinit(buffs);
 }
 
 
@@ -256,7 +256,7 @@ void pyMethod_writeMethodDeclearMain(MimiObj *pyMethod, FILE *fp)
             methodName,
             typeListInC);
     fpusWithInfo(methodDeclear, fp);
-    arg_deinit(buffs);
+    args_deinit(buffs);
 }
 
 int pyMethod_writeEachMethodDeclear(Arg *argEach, Args *handleArgs)
