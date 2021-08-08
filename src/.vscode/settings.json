@@ -3,7 +3,7 @@
         "stdio.h": "c",
         "SysObj.h": "c",
         "mimiobj.h": "c",
-        "pyobjclass.h": "c",
+        "PyClass.h": "c",
         "pymethodclass.h": "c",
         "baseobj.h": "c"
     }

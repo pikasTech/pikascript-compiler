@@ -5,7 +5,7 @@
 #include "PyMethodClass.h"
 #include "MimiObj.h"
 #include "PyMethod.h"
-#include "PyObj.h"
+#include "PyClass.h"
 
 void msc_gererateCode(MimiObj *msc, char *outputPath)
 {

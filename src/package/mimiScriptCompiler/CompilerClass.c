@@ -1,7 +1,7 @@
 #include "BaseObj.h"
 #include "SysObj.h"
 #include "Compiler.h"
-#include "PyObjClass.h"
+#include "PyClass.h"
 #include "PyMethodClass.h"
 
 static void buildMethod(MimiObj *self, Args *args)
