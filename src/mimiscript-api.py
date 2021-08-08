@@ -1,7 +1,4 @@
-class PyObj(TinyObj):
-    base = BaseObj()
-    sys = SysObj()
-    tiny = TinyObj()
+class PyObj(SysObj):
 
     def importClass(className: str, fp: FILE):
         pass
@@ -36,3 +33,9 @@ class PyMethod (SysObj):
 
     def makeMethodDefine(fp: FILE):
         pass
+
+
+class Test(BaseObj):
+    base = BaseObj()
+    sys = SysObj()
+    tiny = TinyObj()

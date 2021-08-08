@@ -1,10 +1,7 @@
 /* Warning!!! Don't modify this file!!! */
-#include "TinyObj.h"
+#include "SysObj.h"
 #include "PyObj.h"
 #include <stdio.h>
-#include "BaseObj.h"
-#include "TinyObj.h"
-#include "SysObj.h"
 #include "BaseObj.h"
 
 void PyObj_makeNewObjMethod(MimiObj *self, Args *args){
@@ -31,7 +28,7 @@ void PyObj_importClassMethod(MimiObj *self, Args *args){
 }
 
 MimiObj *New_PyObj(Args *args){
-    MimiObj *self = New_TinyObj(args);
+    MimiObj *self = New_SysObj(args);
     class_defineMethod(self, "makeNewObj(fp:FILE)", PyObj_makeNewObjMethod);
     class_defineMethod(self, "makeInlcude(fp:FILE)", PyObj_makeInlcudeMethod);
     class_defineMethod(self, "newObj(objName:str,className:str,fp:FILE)", PyObj_newObjMethod);
