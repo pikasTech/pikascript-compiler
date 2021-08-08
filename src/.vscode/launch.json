@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "test",
+            "__name": "test",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/../mimiproject/test/test1.bin",
@@ -25,7 +25,7 @@
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "bin",
+            "__name": "bin",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/../mimiproject/bin/msc.bin",

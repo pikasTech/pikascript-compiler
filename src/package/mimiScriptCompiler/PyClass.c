@@ -28,7 +28,7 @@ static void pyClass_writeMethodFun(MimiObj *pyClass, FILE *fp)
 
 static void pyClass_writeNewFun(MimiObj *pyClass, FILE *fp)
 {
-    char *name = obj_getStr(pyClass, "name");
+    char *name = obj_getStr(pyClass, "__name");
     Args *buffs = New_strBuff();
     char *superClassName = obj_getStr(pyClass, "superClassName");
     char *newFunDeclearation = args_getBuff(buffs, 512);
@@ -64,7 +64,7 @@ void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
 void pyClass_writeOneClassSourceFile(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
-    char *name = obj_getStr(pyClass, "name");
+    char *name = obj_getStr(pyClass, "__name");
     char *superClassName = obj_getStr(pyClass, "superClassName");
     char *fileName = strsAppend(buffs, name, "-api.c");
     char *filePath = strsAppend(buffs, path, fileName);
@@ -93,7 +93,7 @@ void pyClass_writeClassHeadFileMain(MimiObj *pyClass, char *path)
 {
     Args *buffs = New_args(NULL);
     char *newFunDeclearation = args_getBuff(buffs, 512);
-    char *name = obj_getStr(pyClass, "name");
+    char *name = obj_getStr(pyClass, "__name");
     char *fileName = strsAppend(buffs, name, ".h");
     char *filePath = strsAppend(buffs, path, fileName);
     char *ifndef = args_getBuff(buffs, 512);
@@ -129,7 +129,7 @@ int pyClass_gererateClassCode(Arg *argEach, Args *haneldArgs)
     if (strEqu(type, "_class-PyClass"))
     {
         MimiObj *pyClass = arg_getPtr(argEach);
-        MimiObj *msc = obj_getPtr(pyClass, "context");
+        MimiObj *msc = obj_getPtr(pyClass, "__context");
         char *outputPath = obj_getStr(msc, "outputPath");
         pyClass_writeOneClassSourceFile(pyClass, outputPath);
     }
@@ -142,7 +142,7 @@ int pyClass_gererateHeadCode(Arg *argEach, Args *haneldArgs)
     if (strEqu(type, "_class-PyClass"))
     {
         MimiObj *pyClass = arg_getPtr(argEach);
-        MimiObj *msc = obj_getPtr(pyClass, "context");
+        MimiObj *msc = obj_getPtr(pyClass, "__context");
         char *outputPath = obj_getStr(msc, "outputPath");
         pyClass_writeClassHeadFileMain(pyClass, outputPath);
     }

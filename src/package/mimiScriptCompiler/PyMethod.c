@@ -7,9 +7,9 @@
 void pyMethod_writeOneMethodDefine(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
-    MimiObj *pyClass = obj_getPtr(pyMethod, "context");
-    char *className = obj_getStr(pyClass, "name");
-    char *methodName = obj_getStr(pyMethod, "name");
+    MimiObj *pyClass = obj_getPtr(pyMethod, "__context");
+    char *className = obj_getStr(pyClass, "__name");
+    char *methodName = obj_getStr(pyMethod, "__name");
     char *typeList = obj_getStr(pyMethod, "typeList");
     char *returnType = obj_getStr(pyMethod, "returnType");
 
@@ -152,9 +152,9 @@ char *getReturnFunName(Args *buffs, char *returnType)
 void pyMethod_writeMethodFunMain(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
-    MimiObj *pyClass = obj_getPtr(pyMethod, "context");
-    char *className = obj_getStr(pyClass, "name");
-    char *methodName = obj_getStr(pyMethod, "name");
+    MimiObj *pyClass = obj_getPtr(pyMethod, "__context");
+    char *className = obj_getStr(pyClass, "__name");
+    char *methodName = obj_getStr(pyMethod, "__name");
     char *typeList = obj_getStr(pyMethod, "typeList");
     char *returnType = obj_getStr(pyMethod, "returnType");
     char *returnTypeInC = getTypeInC(buffs, returnType);
@@ -258,9 +258,9 @@ char *getTypeListInC(Args *buffs, char *typeList)
 void pyMethod_writeMethodDeclearMain(MimiObj *pyMethod, FILE *fp)
 {
     Args *buffs = New_strBuff();
-    MimiObj *pyClass = obj_getPtr(pyMethod, "context");
-    char *className = obj_getStr(pyClass, "name");
-    char *methodName = obj_getStr(pyMethod, "name");
+    MimiObj *pyClass = obj_getPtr(pyMethod, "__context");
+    char *className = obj_getStr(pyClass, "__name");
+    char *methodName = obj_getStr(pyMethod, "__name");
     char *typeList = obj_getStr(pyMethod, "typeList");
     char *returnType = obj_getStr(pyMethod, "returnType");
     char *methodDeclear = args_getBuff(buffs, 512);

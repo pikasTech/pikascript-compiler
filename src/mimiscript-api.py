@@ -28,7 +28,7 @@ class Root (SysObj):
 
 
 class LED (TinyObj):
-    def on():
+    def on(id:int, io:int, name:str):
         pass
 
     def off():
