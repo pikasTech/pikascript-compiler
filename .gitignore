@@ -3,5 +3,7 @@
 *.layout
 *bin/
 *obj/
+*.o
+build/
 src/dist/
 !.gitignore
