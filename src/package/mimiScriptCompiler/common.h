@@ -3,4 +3,4 @@
 #include <stdio.h>
 #include <stdlib.h>
 void fpusWithInfo(char *string, FILE *fp);
-#endif;
+#endif

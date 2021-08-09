@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "mimiobj.h": "c",
+        "stdint.h": "c",
+        "stdint-gcc.h": "c",
+        "atomic": "c",
+        "cstdint": "c",
+        "compiler.h": "c"
+    }
+}
