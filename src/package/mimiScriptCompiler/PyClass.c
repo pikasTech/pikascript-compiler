@@ -15,11 +15,6 @@ void PyClass_setSuper(MimiObj *self, char *superClassName)
     obj_setStr(self, "superClassName", superClassName);
 }
 
-static void setSuper(MimiObj *self, Args *args)
-{
-    char *superClassName = args_getStr(args, "superClassName");
-    PyClass_setSuper(self, superClassName);
-}
 
 int __foreach_PyClass_makeMethodFun(Arg *argEach, Args *handleArgs)
 {
