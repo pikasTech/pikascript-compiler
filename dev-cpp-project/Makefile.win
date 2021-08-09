@@ -1,0 +1,97 @@
+# Project: Project1
+# Makefile created by Dev-C++ 5.10
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = ../src/boot/msc-win/main.o ../src/package/mimiscript-api/Compiler-api.o ../src/package/mimiscript-api/PyClass-api.o ../src/package/mimiscript-api/PyMethod-api.o ../src/package/mimiscript-api/PyObj-api.o ../src/package/mimilib/mimiData/dataArg.o ../src/package/mimilib/mimiData/dataArgs.o ../src/package/mimilib/mimiData/dataLink.o ../src/package/mimilib/mimiData/dataLinkNode.o ../src/package/mimilib/mimiData/dataLog.o ../src/package/mimilib/mimiData/dataMemory.o ../src/package/mimilib/mimiData/dataString.o ../src/package/mimilib/mimiData/dataStrs.o ../src/package/mimilib/mimiObject/BaseObj.o ../src/package/mimilib/mimiObject/method.o ../src/package/mimilib/mimiObject/MimiClass.o ../src/package/mimilib/mimiObject/MimiObj.o ../src/package/mimilib/mimiObject/SysObj.o ../src/package/mimilib/mimiObject/TinyObj.o ../src/package/mimiScriptCompiler/common.o ../src/package/mimiScriptCompiler/Compiler.o ../src/package/mimiScriptCompiler/PyClass.o ../src/package/mimiScriptCompiler/PyMethod.o ../src/package/mimiScriptCompiler/PyObj.o
+LINKOBJ  = ../src/boot/msc-win/main.o ../src/package/mimiscript-api/Compiler-api.o ../src/package/mimiscript-api/PyClass-api.o ../src/package/mimiscript-api/PyMethod-api.o ../src/package/mimiscript-api/PyObj-api.o ../src/package/mimilib/mimiData/dataArg.o ../src/package/mimilib/mimiData/dataArgs.o ../src/package/mimilib/mimiData/dataLink.o ../src/package/mimilib/mimiData/dataLinkNode.o ../src/package/mimilib/mimiData/dataLog.o ../src/package/mimilib/mimiData/dataMemory.o ../src/package/mimilib/mimiData/dataString.o ../src/package/mimilib/mimiData/dataStrs.o ../src/package/mimilib/mimiObject/BaseObj.o ../src/package/mimilib/mimiObject/method.o ../src/package/mimilib/mimiObject/MimiClass.o ../src/package/mimilib/mimiObject/MimiObj.o ../src/package/mimilib/mimiObject/SysObj.o ../src/package/mimilib/mimiObject/TinyObj.o ../src/package/mimiScriptCompiler/common.o ../src/package/mimiScriptCompiler/Compiler.o ../src/package/mimiScriptCompiler/PyClass.o ../src/package/mimiScriptCompiler/PyMethod.o ../src/package/mimiScriptCompiler/PyObj.o
+LIBS     = -L"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -m32 -g3
+INCS     = -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimiscript-api" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimilib/mimiData" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimilib/mimiObject" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimiScriptCompiler"
+CXXINCS  = -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimiscript-api" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimilib/mimiData" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimilib/mimiObject" -I"C:/Users/liang/dev/mimiscript-compiler/src/package/mimiScriptCompiler"
+BIN      = Project1.exe
+CXXFLAGS = $(CXXINCS) -O1 -m32 -std=c99 -g3
+CFLAGS   = $(INCS) -O1 -m32 -std=c99 -g3
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+../src/boot/msc-win/main.o: ../src/boot/msc-win/main.c
+	$(CC) -c ../src/boot/msc-win/main.c -o ../src/boot/msc-win/main.o $(CFLAGS)
+
+../src/package/mimiscript-api/Compiler-api.o: ../src/package/mimiscript-api/Compiler-api.c
+	$(CC) -c ../src/package/mimiscript-api/Compiler-api.c -o ../src/package/mimiscript-api/Compiler-api.o $(CFLAGS)
+
+../src/package/mimiscript-api/PyClass-api.o: ../src/package/mimiscript-api/PyClass-api.c
+	$(CC) -c ../src/package/mimiscript-api/PyClass-api.c -o ../src/package/mimiscript-api/PyClass-api.o $(CFLAGS)
+
+../src/package/mimiscript-api/PyMethod-api.o: ../src/package/mimiscript-api/PyMethod-api.c
+	$(CC) -c ../src/package/mimiscript-api/PyMethod-api.c -o ../src/package/mimiscript-api/PyMethod-api.o $(CFLAGS)
+
+../src/package/mimiscript-api/PyObj-api.o: ../src/package/mimiscript-api/PyObj-api.c
+	$(CC) -c ../src/package/mimiscript-api/PyObj-api.c -o ../src/package/mimiscript-api/PyObj-api.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataArg.o: ../src/package/mimilib/mimiData/dataArg.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataArg.c -o ../src/package/mimilib/mimiData/dataArg.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataArgs.o: ../src/package/mimilib/mimiData/dataArgs.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataArgs.c -o ../src/package/mimilib/mimiData/dataArgs.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataLink.o: ../src/package/mimilib/mimiData/dataLink.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataLink.c -o ../src/package/mimilib/mimiData/dataLink.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataLinkNode.o: ../src/package/mimilib/mimiData/dataLinkNode.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataLinkNode.c -o ../src/package/mimilib/mimiData/dataLinkNode.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataLog.o: ../src/package/mimilib/mimiData/dataLog.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataLog.c -o ../src/package/mimilib/mimiData/dataLog.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataMemory.o: ../src/package/mimilib/mimiData/dataMemory.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataMemory.c -o ../src/package/mimilib/mimiData/dataMemory.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataString.o: ../src/package/mimilib/mimiData/dataString.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataString.c -o ../src/package/mimilib/mimiData/dataString.o $(CFLAGS)
+
+../src/package/mimilib/mimiData/dataStrs.o: ../src/package/mimilib/mimiData/dataStrs.c
+	$(CC) -c ../src/package/mimilib/mimiData/dataStrs.c -o ../src/package/mimilib/mimiData/dataStrs.o $(CFLAGS)
+
+../src/package/mimilib/mimiObject/BaseObj.o: ../src/package/mimilib/mimiObject/BaseObj.c
+	$(CC) -c ../src/package/mimilib/mimiObject/BaseObj.c -o ../src/package/mimilib/mimiObject/BaseObj.o $(CFLAGS)
+
+../src/package/mimilib/mimiObject/method.o: ../src/package/mimilib/mimiObject/method.c
+	$(CC) -c ../src/package/mimilib/mimiObject/method.c -o ../src/package/mimilib/mimiObject/method.o $(CFLAGS)
+
+../src/package/mimilib/mimiObject/MimiClass.o: ../src/package/mimilib/mimiObject/MimiClass.c
+	$(CC) -c ../src/package/mimilib/mimiObject/MimiClass.c -o ../src/package/mimilib/mimiObject/MimiClass.o $(CFLAGS)
+
+../src/package/mimilib/mimiObject/MimiObj.o: ../src/package/mimilib/mimiObject/MimiObj.c
+	$(CC) -c ../src/package/mimilib/mimiObject/MimiObj.c -o ../src/package/mimilib/mimiObject/MimiObj.o $(CFLAGS)
+
+../src/package/mimilib/mimiObject/SysObj.o: ../src/package/mimilib/mimiObject/SysObj.c
+	$(CC) -c ../src/package/mimilib/mimiObject/SysObj.c -o ../src/package/mimilib/mimiObject/SysObj.o $(CFLAGS)
+
+../src/package/mimilib/mimiObject/TinyObj.o: ../src/package/mimilib/mimiObject/TinyObj.c
+	$(CC) -c ../src/package/mimilib/mimiObject/TinyObj.c -o ../src/package/mimilib/mimiObject/TinyObj.o $(CFLAGS)
+
+../src/package/mimiScriptCompiler/common.o: ../src/package/mimiScriptCompiler/common.c
+	$(CC) -c ../src/package/mimiScriptCompiler/common.c -o ../src/package/mimiScriptCompiler/common.o $(CFLAGS)
+
+../src/package/mimiScriptCompiler/Compiler.o: ../src/package/mimiScriptCompiler/Compiler.c
+	$(CC) -c ../src/package/mimiScriptCompiler/Compiler.c -o ../src/package/mimiScriptCompiler/Compiler.o $(CFLAGS)
+
+../src/package/mimiScriptCompiler/PyClass.o: ../src/package/mimiScriptCompiler/PyClass.c
+	$(CC) -c ../src/package/mimiScriptCompiler/PyClass.c -o ../src/package/mimiScriptCompiler/PyClass.o $(CFLAGS)
+
+../src/package/mimiScriptCompiler/PyMethod.o: ../src/package/mimiScriptCompiler/PyMethod.c
+	$(CC) -c ../src/package/mimiScriptCompiler/PyMethod.c -o ../src/package/mimiScriptCompiler/PyMethod.o $(CFLAGS)
+
+../src/package/mimiScriptCompiler/PyObj.o: ../src/package/mimiScriptCompiler/PyObj.c
+	$(CC) -c ../src/package/mimiScriptCompiler/PyObj.c -o ../src/package/mimiScriptCompiler/PyObj.o $(CFLAGS)

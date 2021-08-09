@@ -37,10 +37,9 @@ class PyMethod (SysObj):
 
 class Compiler(SysObj):
     # import class only
-    method = PyMethod()
-    class = PyClass()
-    obj = PyObj()
-    base = Base()
+    PyMethod()
+    PyClass()
+    PyObj()
 
     def build(pythonApiPath: str, outputPath: str):
         pass
