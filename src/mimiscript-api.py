@@ -46,3 +46,6 @@ class Compiler(SysObj):
 
     def analizeFile(pythonApiPath: str):
         pass
+
+class MyRoot(SyObj):
+    msc = Compiler()
