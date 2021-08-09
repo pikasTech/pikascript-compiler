@@ -2,7 +2,11 @@
 
 ## compile python to mimsicript C project
 
-## linux下测试mimiscript内核(推荐ubuntu20.04)：
+## windows
+
+https://github.com/mimilib/mimiscript-compiler/releases/download/win10_v0.1/mimiscript-api-win10-v0.1.zip
+
+## linux
 
 step1: 拉取项目
 ``` shell
