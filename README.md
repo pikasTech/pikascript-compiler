@@ -1,6 +1,6 @@
 # mimiscript-compiler
 
-## compile python to mimsicript C project
+## compile python to mimsicript C api
 
 ## windows
 
