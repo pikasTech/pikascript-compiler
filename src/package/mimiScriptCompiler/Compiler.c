@@ -220,10 +220,10 @@ void Compiler_analizeFile(MimiObj *msc, char *pythonApiPath)
     char *pyTextBuff = strsCopy(buffs, pyTextFromFile);
     free(pyTextFromFile);
     int lineNum = strCountSign(pyTextBuff, '\n');
-    for (int i = 0; i < lineNum; i++)
+    for (int i = 0; i < lineNum + 1; i++)
     {
         char *line = strsPopToken(buffs, pyTextBuff, '\n');
-        printf("|%d|>>>%s\r\n", i, line);
+        printf("|%d|>>>%s\r\n", i + 1, line);
         Compiler_analizeLine(msc, line);
     }
 exit:
