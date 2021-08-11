@@ -4,8 +4,7 @@
 
 ## windows
 
-https://github.com/mimilib/mimiscript-compiler/releases/download/win10_v0.1/mimiscript-api-win10-v0.1.zip
-
+https://github.com/mimilib/mimiscript-compiler/releases/download/v0.1.1/mimiscript-compiler.v0.1.1.exe
 ## linux
 
 step1: 拉取项目
