@@ -55,15 +55,15 @@ TEST(compiler_test, analize4)
     EXPECT_EQ(DMEMS.blk_num, mem);
 }
 
-TEST(compiler_test, analizeFile1)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api.py");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, analizeFile1)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api.py");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }
 
 TEST(compiler_test, analizeFile2)
 {
@@ -105,52 +105,52 @@ TEST(compiler_test, analizeFile4)
 //     EXPECT_EQ(DMEMS.blk_num, mem);
 // }
 
-TEST(compiler_test, build)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api.py", (char *)"../src/dist/");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, build)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api.py", (char *)"../src/dist/");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }
 
-TEST(compiler_test, build2)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api2.py", (char *)"../src/dist/");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, build2)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api2.py", (char *)"../src/dist/");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }
 
-TEST(compiler_test, build3)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api3.py", (char *)"../src/dist/");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, build3)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api3.py", (char *)"../src/dist/");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }
 
-TEST(compiler_test, build4)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api4.py", (char *)"../src/dist/");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, build4)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api4.py", (char *)"../src/dist/");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }
 
-TEST(compiler_test, build5)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api5.py", (char *)"../src/dist/");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, build5)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api5.py", (char *)"../src/dist/");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }

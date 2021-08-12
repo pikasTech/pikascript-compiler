@@ -172,9 +172,10 @@ static void Compiler_analizeDef(MimiObj *self, char *line, Args *buffs)
     }
     obj_setStr(self, strsAppend(buffs, methodObjPath, ".typeList"), typeList);
     int argNum = strCountSign(typeList, ',') + 1;
+    char *typeListBuff = strsCopy(buffs, typeList);
     for (int i = 0; i < argNum; i++)
     {
-        char *typeDeclearation = strsPopToken(buffs, typeList, ',');
+        char *typeDeclearation = strsPopToken(buffs, typeListBuff, ',');
         printInfo("typeDeclearation", typeDeclearation);
         char *argName = strsGetFirstToken(buffs, typeDeclearation, ':');
         printInfo("argName", argName);
@@ -239,6 +240,7 @@ int Compiler_analizeFile(MimiObj *msc, char *pythonApiPath)
     for (int i = 0; i < lineNum + 1; i++)
     {
         char *line = strsPopToken(buffs, pyTextBuff, '\n');
+        line = strsDeleteChar(buffs, line, '\r');
         printf("[   %d\t]%s\r\n", i + 1, line);
         Compiler_analizeLine(msc, line);
     }
