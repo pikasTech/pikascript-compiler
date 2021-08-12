@@ -80,8 +80,9 @@ static void Compiler_analizePass(MimiObj *self, char *line, Args *buffs)
 {
 }
 
-static void Compiler_analizeNew(MimiObj *self, char *line, Args *buffs)
+static void Compiler_analizeNew(MimiObj *self, char *line)
 {
+    Args *buffs = New_args(NULL);
     char *cleanLine = strsDeleteChar(buffs, line, ' ');
     char *currentClassName = obj_getStr(self, "currentClassName");
     char *pyObjName = NULL;
@@ -124,6 +125,7 @@ static void Compiler_analizeNew(MimiObj *self, char *line, Args *buffs)
         printInfo("pyNamePath", pyNamePath);
         obj_setStr(self, pyNamePath, pyObjName);
     }
+    args_deinit(buffs);
 }
 
 static void Compiler_analizeClass(MimiObj *self, char *line, Args *buffs)
@@ -186,6 +188,12 @@ int Compiler_analizeLine(MimiObj *self, char *line)
 {
     Args *buffs = New_args(NULL);
     int res = 0;
+    if (strIsContain(line, '#'))
+    {
+        // comments
+        goto exit;
+    }
+
     if (strIsStartWith(line, "class "))
     {
         Compiler_analizeClass(self, line, buffs);
@@ -206,7 +214,7 @@ int Compiler_analizeLine(MimiObj *self, char *line)
 
     if (strIsStartWith(line, "    ") && strIsContain(line, '(') && strIsContain(line, ')'))
     {
-        Compiler_analizeNew(self, line, buffs);
+        Compiler_analizeNew(self, line);
         goto exit;
     }
 exit:
@@ -231,7 +239,7 @@ int Compiler_analizeFile(MimiObj *msc, char *pythonApiPath)
     for (int i = 0; i < lineNum + 1; i++)
     {
         char *line = strsPopToken(buffs, pyTextBuff, '\n');
-        printf("|%d|>>>%s\r\n", i + 1, line);
+        printf("[   %d\t]%s\r\n", i + 1, line);
         Compiler_analizeLine(msc, line);
     }
     res = 0;

@@ -190,6 +190,13 @@ TEST(object_test, test10)
     obj_deinit(root);
 }
 
+TEST(object_test, newObject)
+{
+    MimiObj *root = newRootObj((char *)"root", New_MYROOT1);
+    obj_newObj(root, (char *)"newUart", (char *)"UART");
+    obj_deinit(root);
+}
+
 extern DMEM_STATE DMEMS;
 TEST(object_test, mem)
 {
