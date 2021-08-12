@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 MimiObj *New_Compiler(Args *args);
-void Compiler_analizeFile(MimiObj *self, char * pythonApiPath);
-void Compiler_build(MimiObj *self, char * pythonApiPath, char * outputPath);
+int Compiler_analizeLine(MimiObj *self, char * line);
+int Compiler_analizeFile(MimiObj *self, char * pythonApiPath);
+int Compiler_build(MimiObj *self, char * pythonApiPath, char * outputPath);
 #endif

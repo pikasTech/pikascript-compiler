@@ -13,7 +13,7 @@ class PyObj(SysObj):
         pass
 
 
-class PyClass (SysObj):
+class PyClass(SysObj):
     def setSuper(superClassName: str):
         pass
 
@@ -36,14 +36,16 @@ class PyMethod (SysObj):
 
 
 class Compiler(SysObj):
-    # import class only
-    method = PyMethod()
-    class = PyClass()
-    obj = PyObj()
-    base = Base()
 
-    def build(pythonApiPath: str, outputPath: str):
+    PyMethod()
+    PyMethod()
+    PyClass()
+
+    def build(pythonApiPath: str, outputPath: str) -> int:
         pass
 
-    def analizeFile(pythonApiPath: str):
+    def analizeFile(pythonApiPath: str) -> int:
+        pass
+
+    def analizeLine(line: str) -> int:
         pass

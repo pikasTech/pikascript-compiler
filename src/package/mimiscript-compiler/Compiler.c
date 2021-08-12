@@ -43,9 +43,14 @@ void Compiler_gererateCode(MimiObj *msc, char *outputPath)
     args_foreach(msc->attributeList, __foreach_Compiler_makeHead, NULL);
 }
 
-void Compiler_build(MimiObj *msc, char *pythonApiPath, char *outputPath)
+int Compiler_build(MimiObj *msc, char *pythonApiPath, char *outputPath)
 {
-    Compiler_analizeFile(msc, pythonApiPath);
+    int res = 0;
+    res = Compiler_analizeFile(msc, pythonApiPath);
+    if (0 != res)
+    {
+        return res;
+    }
     Compiler_gererateCode(msc, outputPath);
 }
 
@@ -177,9 +182,10 @@ static void Compiler_analizeDef(MimiObj *self, char *line, Args *buffs)
     }
 }
 
-static void Compiler_analizeLine(MimiObj *self, char *line)
+int Compiler_analizeLine(MimiObj *self, char *line)
 {
     Args *buffs = New_args(NULL);
+    int res = 0;
     if (strIsStartWith(line, "class "))
     {
         Compiler_analizeClass(self, line, buffs);
@@ -205,16 +211,18 @@ static void Compiler_analizeLine(MimiObj *self, char *line)
     }
 exit:
     args_deinit(buffs);
-    return;
+    return res;
 }
 
-void Compiler_analizeFile(MimiObj *msc, char *pythonApiPath)
+int Compiler_analizeFile(MimiObj *msc, char *pythonApiPath)
 {
     Args *buffs = New_args(NULL);
+    int res = 0;
     char *pyTextFromFile = getMimiscriptPythonApiText(pythonApiPath);
     if (NULL == pyTextFromFile)
     {
         printf("[error] compiler: load file faild\r\n");
+        res = 1;
         goto exit;
     }
     char *pyTextBuff = strsCopy(buffs, pyTextFromFile);
@@ -226,7 +234,9 @@ void Compiler_analizeFile(MimiObj *msc, char *pythonApiPath)
         printf("|%d|>>>%s\r\n", i + 1, line);
         Compiler_analizeLine(msc, line);
     }
+    res = 0;
+    goto exit;
 exit:
     args_deinit(buffs);
-    return;
+    return res;
 }
