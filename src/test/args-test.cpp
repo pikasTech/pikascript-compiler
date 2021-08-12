@@ -4,8 +4,11 @@ extern "C"
 #include "dataArgs.h"
 #include "dataString.h"
 }
+static int mem;
+extern DMEM_STATE DMEMS;
 TEST(args_test, test1)
 {
+    mem = DMEMS.blk_num;
     Args *args = New_args(NULL);
     args_setInt(args, (char *)"a", 1);
     int a = args_getInt(args, (char *)"a");
@@ -139,5 +142,5 @@ TEST(args_test, test12)
 extern DMEM_STATE DMEMS;
 TEST(args_test, mem)
 {
-    EXPECT_EQ(DMEMS.blk_num, 0);
+    EXPECT_EQ(DMEMS.blk_num, mem);
 }
