@@ -1,5 +1,5 @@
-class PyObj(SysObj):
+class PyObj(BaseObj):
 
-    def importClass(className: str, fp: FILE):
+    def build(className: str):
         pass
 

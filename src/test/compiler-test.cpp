@@ -72,6 +72,7 @@ TEST(compiler_test, analizeFile5)
     obj_deinit(msc);
 }
 
+
 TEST(compiler_test, mem)
 {
     EXPECT_EQ(DMEMS.blk_num, mem);
