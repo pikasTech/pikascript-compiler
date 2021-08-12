@@ -8,13 +8,16 @@ extern "C"
 #include "MimiObj.h"
 #include "dataMemory.h"
 #include "Compiler.h"
+#include "PyClass.h"
+#include "PyMethod.h"
+#include "PyObj.h"
 }
 extern DMEM_STATE DMEMS;
-TEST(compiler_test, test1)
+TEST(compiler_test, testcompile)
 {
     char inputBuff[256] = {0};
     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    obj_run(msc, (char *)"build('../src/mimiscript-api.py', '../src/dist/')");
+    obj_run(msc, (char *)"build('../src/test/test-mimiscript-api.py', '../src/dist/')");
     // obj_run(msc, (char *)"build('mimiscript-api.py', 'mimiscript-api/')");
 
     float dmemBlockNum = DMEM_BLOCK_NUM;
