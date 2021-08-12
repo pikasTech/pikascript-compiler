@@ -13,9 +13,7 @@ project(msc VERSION 0.1.0)
 # aux_source_directory(src/package/mimiscript-api mimiscriptApi)#将./cli目录中的文件名称赋值给变量 cli_src
 # aux_source_directory(src/package/mimiscript-compiler mimiscriptCompiler)#将./cli目录中的文件名称赋值给变量 cli_src
 
-include_directories(src/package/mimilib/mimiTest)
 include_directories(src/package/mimilib/mimiDevice)
-include_directories(src/package/mimilib/mimiSH)
 include_directories(src/package/mimilib/mimiEvent)
 include_directories(src/package/mimilib/mimiObject)
 include_directories(src/package/mimilib/mimiData)
