@@ -9,6 +9,13 @@
 #include "PyMethod.h"
 #include "PyClass.h"
 
+
+
+int __foreach_Compiler_makeApi(Arg *argEach, Args *haneldArgs);
+void Compiler_makeApi(MimiObj *msc)
+{
+    args_foreach(msc->attributeList, __foreach_Compiler_makeApi, NULL);
+}
 int __foreach_Compiler_makeApi(Arg *argEach, Args *haneldArgs)
 {
     char *type = arg_getType(argEach);
@@ -22,6 +29,11 @@ int __foreach_Compiler_makeApi(Arg *argEach, Args *haneldArgs)
     return 0;
 }
 
+int __foreach_Compiler_makeHead(Arg *argEach, Args *haneldArgs);
+void Compiler_makeHead(MimiObj *msc)
+{
+    args_foreach(msc->attributeList, __foreach_Compiler_makeHead, NULL);
+}
 int __foreach_Compiler_makeHead(Arg *argEach, Args *haneldArgs)
 {
     char *type = arg_getType(argEach);
@@ -39,8 +51,8 @@ void Compiler_gererateCode(MimiObj *msc, char *outputPath)
 {
     printf("generating class source file.\r\n");
     obj_setStr(msc, "outputPath", outputPath);
-    args_foreach(msc->attributeList, __foreach_Compiler_makeApi, NULL);
-    args_foreach(msc->attributeList, __foreach_Compiler_makeHead, NULL);
+    Compiler_makeApi(msc);
+    Compiler_makeHead(msc);
 }
 
 int Compiler_build(MimiObj *msc, char *pythonApiPath, char *outputPath)

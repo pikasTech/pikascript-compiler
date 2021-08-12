@@ -175,13 +175,13 @@ TEST(compiler_test, build4_mem)
     mem = DMEMS.blk_num;
 }
 
-// TEST(compiler_test, build5)
-// {
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api5.py", (char *)"../src/dist/");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-// }
+TEST(compiler_test, build5)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api5.py", (char *)"../src/dist/");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+}
 
 TEST(compiler_test, build5_mem)
 {

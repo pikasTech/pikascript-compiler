@@ -32,6 +32,7 @@ static void PyClass_makeMethodFun(MimiObj *pyClass, FILE *fp)
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodFun, handleArgs);
+    args_deinit(handleArgs);
 }
 
 int __foreach_PyClass_makeMethodDefine(Arg *argEach, Args *handleArgs)
@@ -78,6 +79,7 @@ static void PyClass_makeNewFun(MimiObj *pyClass, FILE *fp)
     args_setPtr(handleArgs, "fp", fp);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeNewObj, handleArgs);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDefine, handleArgs);
+    args_deinit(handleArgs);
 
     sprintf(returnCmd, "    return self;\n");
     sprintf(endLine, "}\n");
@@ -92,6 +94,7 @@ void pyClass_gnenrateDefineMethodFun(MimiObj *pyClass, FILE *fp)
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDefine, handleArgs);
+    args_deinit(handleArgs);
 }
 
 int __foreach_PyClass_makeImportInclude(Arg *argEach, Args *handleArgs)
@@ -110,6 +113,7 @@ static void PyClass_makeImportInclude(MimiObj *pyClass, FILE *fp)
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeImportInclude, handleArgs);
+    args_deinit(handleArgs);
 }
 
 /* main operation */
@@ -183,6 +187,7 @@ void PyClass_makeHead(MimiObj *pyClass, char *path)
     Args *handleArgs = New_args(NULL);
     args_setPtr(handleArgs, "fp", fp);
     args_foreach(pyClass->attributeList, __foreach_PyClass_makeMethodDeclear, handleArgs);
+    args_deinit(handleArgs);
 
     fpusWithInfo("#endif\n", fp);
 
