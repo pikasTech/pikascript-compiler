@@ -47,3 +47,6 @@ class Compiler(SysObj):
     def analizeFile(pythonApiPath: str):
         pass
 
+    def setPath(pythonApiPath: str, outputPath: str):
+        pass
+
