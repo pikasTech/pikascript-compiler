@@ -30,7 +30,7 @@ TEST(link_test, test1)
     link_deinit(link);
 }
 extern DMEM_STATE DMEMS;
-TEST(link_test, test_mem)
+TEST(link_test, mem)
 {
     EXPECT_EQ(DMEMS.blk_num, 0);
 }

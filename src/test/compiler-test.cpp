@@ -18,7 +18,6 @@ TEST(compiler_test, analize1)
     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
     Compiler_analizeLine(msc, (char *)"class Test()");
     obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, 0);
 }
 
 TEST(compiler_test, analize2)
@@ -28,7 +27,6 @@ TEST(compiler_test, analize2)
     Compiler_analizeLine(msc, (char *)"    def test:");
     Compiler_analizeLine(msc, (char *)"    pass");
     obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, 0);
 }
 
 TEST(compiler_test, analize3)
@@ -38,7 +36,6 @@ TEST(compiler_test, analize3)
     Compiler_analizeLine(msc, (char *)"    def test:");
     Compiler_analizeLine(msc, (char *)"    pass");
     obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, 0);
 }
 
 TEST(compiler_test, testcompile)
@@ -53,5 +50,9 @@ TEST(compiler_test, testcompile)
            DMEMS.maxNum / dmemBlockNum * 100.0);
     printf("memory request times = %d \r\n", DMEMS.reqTimes);
     obj_deinit(msc);
+}
+
+TEST(compiler_test, mem)
+{
     EXPECT_EQ(DMEMS.blk_num, 0);
 }

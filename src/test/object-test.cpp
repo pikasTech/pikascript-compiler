@@ -191,7 +191,7 @@ TEST(object_test, test10)
 }
 
 extern DMEM_STATE DMEMS;
-TEST(object_test, test_mem)
+TEST(object_test, mem)
 {
     EXPECT_EQ(DMEMS.blk_num, 0);
 }
