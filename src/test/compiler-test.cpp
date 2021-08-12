@@ -14,9 +14,14 @@ extern "C"
 }
 extern DMEM_STATE DMEMS;
 static int mem;
+TEST(compiler_test, membefore)
+{
+    EXPECT_EQ(DMEMS.blk_num, 0);
+    mem = DMEMS.blk_num;
+}
+
 TEST(compiler_test, analize1)
 {
-    mem = DMEMS.blk_num;
     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
     Compiler_analizeLine(msc, (char *)"class Test()");
     obj_deinit(msc);
@@ -116,52 +121,70 @@ TEST(compiler_test, analizeFile5)
     EXPECT_EQ(DMEMS.blk_num, mem);
 }
 
-// TEST(compiler_test, build)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api.py", (char *)"../src/dist/");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, build1)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api.py", (char *)"../src/dist/");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+}
 
-// TEST(compiler_test, build2)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api2.py", (char *)"../src/dist/");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, build1_mem)
+{
+    EXPECT_EQ(DMEMS.blk_num, mem);
+    mem = DMEMS.blk_num;
+}
 
-// TEST(compiler_test, build3)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api3.py", (char *)"../src/dist/");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, build2)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api2.py", (char *)"../src/dist/");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+}
+TEST(compiler_test, build2_mem)
+{
+    EXPECT_EQ(DMEMS.blk_num, mem);
+    mem = DMEMS.blk_num;
+}
 
-// TEST(compiler_test, build4)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api4.py", (char *)"../src/dist/");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, build3)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api3.py", (char *)"../src/dist/");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+}
 
-// TEST(compiler_test, build5)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api5.py", (char *)"../src/dist/");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, build3_mem)
+{
+    EXPECT_EQ(DMEMS.blk_num, mem);
+    mem = DMEMS.blk_num;
+}
+
+TEST(compiler_test, build4)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api4.py", (char *)"../src/dist/");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+}
+TEST(compiler_test, build4_mem)
+{
+    EXPECT_EQ(DMEMS.blk_num, mem);
+    mem = DMEMS.blk_num;
+}
+
+TEST(compiler_test, build5)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_build(msc, (char *)"../src/test/test-mimiscript-api5.py", (char *)"../src/dist/");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+}
+
+TEST(compiler_test, build5_mem)
+{
+    EXPECT_EQ(DMEMS.blk_num, mem);
+    mem = DMEMS.blk_num;
+}
