@@ -4,3 +4,6 @@
 [submodule "mimiproject"]
 	path = mimiproject
 	url = https://github.com/mimilib/mimiproject
+[submodule "src/package/googletest"]
+	path = src/package/googletest
+	url = https://github.com/google/googletest
