@@ -95,15 +95,15 @@ TEST(compiler_test, analizeFile4)
     EXPECT_EQ(DMEMS.blk_num, mem);
 }
 
-TEST(compiler_test, analizeFile5)
-{
-    mem = DMEMS.blk_num;
-    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-    int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api5.py");
-    EXPECT_EQ(0, res);
-    obj_deinit(msc);
-    EXPECT_EQ(DMEMS.blk_num, mem);
-}
+// TEST(compiler_test, analizeFile5)
+// {
+//     mem = DMEMS.blk_num;
+//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+//     int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api5.py");
+//     EXPECT_EQ(0, res);
+//     obj_deinit(msc);
+//     EXPECT_EQ(DMEMS.blk_num, mem);
+// }
 
 TEST(compiler_test, build)
 {

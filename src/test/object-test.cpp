@@ -36,7 +36,7 @@ void hello2(MimiObj *obj, Args *args)
 
 void hello(MimiObj *obj, Args *args)
 {
-    char *name = args_getStr(args, (char *)"__name");
+    char *name = args_getStr(args, (char *)"name");
     int32_t isShow = args_getInt(args, (char *)"isShow");
     if (isShow)
     {
@@ -193,7 +193,18 @@ TEST(object_test, test10)
 TEST(object_test, newObject)
 {
     MimiObj *root = newRootObj((char *)"root", New_MYROOT1);
-    obj_newObj(root, (char *)"newUart", (char *)"UART");
+    obj_newObj(root, (char *)"newUart", (char *)"USART");
+    obj_deinit(root);
+}
+
+TEST(object_test, newObjectAndSetStr)
+{
+    MimiObj *root = newRootObj((char *)"root", New_MYROOT1);
+    obj_newObj(root, (char *)"newUart", (char *)"USART");
+    obj_setStr(root, (char *)"newUart.name", (char *)"testName");
+    char *name = obj_getStr(root, (char *)"newUart.name");
+    printf("the name is %s\r\n", name);
+    EXPECT_TRUE(strEqu((char *)"testName", name));
     obj_deinit(root);
 }
 
