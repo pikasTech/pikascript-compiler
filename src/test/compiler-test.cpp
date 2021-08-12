@@ -55,15 +55,26 @@ TEST(compiler_test, analize4)
     EXPECT_EQ(DMEMS.blk_num, mem);
 }
 
-// TEST(compiler_test, analizeFile1)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api.py");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, analize5)
+{
+    mem = DMEMS.blk_num;
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    Compiler_analizeLine(msc, (char *)"class Compiler(SysObj):");
+    Compiler_analizeLine(msc, (char *)"    def analizeFile(pythonApiPath: str):");
+    Compiler_analizeLine(msc, (char *)"    pass");
+    obj_deinit(msc);
+    EXPECT_EQ(DMEMS.blk_num, mem);
+}
+
+TEST(compiler_test, analizeFile1)
+{
+    mem = DMEMS.blk_num;
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api.py");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+    EXPECT_EQ(DMEMS.blk_num, mem);
+}
 
 TEST(compiler_test, analizeFile2)
 {
@@ -95,15 +106,15 @@ TEST(compiler_test, analizeFile4)
     EXPECT_EQ(DMEMS.blk_num, mem);
 }
 
-// TEST(compiler_test, analizeFile5)
-// {
-//     mem = DMEMS.blk_num;
-//     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
-//     int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api5.py");
-//     EXPECT_EQ(0, res);
-//     obj_deinit(msc);
-//     EXPECT_EQ(DMEMS.blk_num, mem);
-// }
+TEST(compiler_test, analizeFile5)
+{
+    mem = DMEMS.blk_num;
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    int res = Compiler_analizeFile(msc, (char *)"../src/test/test-mimiscript-api5.py");
+    EXPECT_EQ(0, res);
+    obj_deinit(msc);
+    EXPECT_EQ(DMEMS.blk_num, mem);
+}
 
 // TEST(compiler_test, build)
 // {

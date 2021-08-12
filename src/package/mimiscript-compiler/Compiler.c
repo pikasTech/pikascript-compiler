@@ -76,7 +76,7 @@ static void printInfo(char *argName, char *argVal)
     printf("\t\t[info] %s: \"%s\"\r\n", argName, argVal);
 }
 
-static void Compiler_analizePass(MimiObj *self, char *line, Args *buffs)
+static void Compiler_analizePass(MimiObj *self, char *line)
 {
 }
 
@@ -128,8 +128,9 @@ static void Compiler_analizeNew(MimiObj *self, char *line)
     args_deinit(buffs);
 }
 
-static void Compiler_analizeClass(MimiObj *self, char *line, Args *buffs)
+static void Compiler_analizeClass(MimiObj *self, char *line)
 {
+    Args *buffs = New_args(NULL);
     char *classSentenceWithBlock = strsRemovePrefix(buffs, line, "class ");
     char *classSentence = strsDeleteChar(buffs, classSentenceWithBlock, ' ');
     printInfo("classSentence", classSentence);
@@ -141,10 +142,12 @@ static void Compiler_analizeClass(MimiObj *self, char *line, Args *buffs)
     printInfo("superClassName", superClassName);
     obj_setStr(self, strsAppend(buffs, className, ".superClassName"), superClassName);
     obj_setStr(self, "currentClassName", className);
+    args_deinit(buffs);
 }
 
-static void Compiler_analizeDef(MimiObj *self, char *line, Args *buffs)
+static void Compiler_analizeDef(MimiObj *self, char *line)
 {
+    Args *buffs = New_args(NULL);
     char *currentClassName = obj_getStr(self, "currentClassName");
     printInfo("currentClassName", currentClassName);
     char *defSentenceWithBlock = strsRemovePrefix(buffs, line, "    def ");
@@ -156,7 +159,7 @@ static void Compiler_analizeDef(MimiObj *self, char *line, Args *buffs)
     printInfo("methodObjPath", methodObjPath);
     obj_newObj(self, methodObjPath, "PyMethod");
     /* init methodObjPath object directly */
-    obj_getObj(self, methodObjPath, 0);
+    MimiObj *methodObj = obj_getObj(self, methodObjPath, 0);
     char *returnType = strsCut(buffs, defSentence, '>', ':');
     printInfo("returnType", returnType);
     if (NULL != returnType)
@@ -166,28 +169,30 @@ static void Compiler_analizeDef(MimiObj *self, char *line, Args *buffs)
 
     char *typeList = strsCut(buffs, defSentence, '(', ')');
     printInfo("typeList", typeList);
-    if (0 == strGetSize(typeList))
+    if (0 != strGetSize(typeList))
     {
-        return;
+        obj_setStr(self, strsAppend(buffs, methodObjPath, ".typeList"), typeList);
+        int argNum = strCountSign(typeList, ',') + 1;
+        char *typeListBuff = strsCopy(buffs, typeList);
+        for (int i = 0; i < argNum; i++)
+        {
+            char *typeDeclearation = strsPopToken(buffs, typeListBuff, ',');
+            printInfo("typeDeclearation", typeDeclearation);
+            char *argName = strsGetFirstToken(buffs, typeDeclearation, ':');
+            printInfo("argName", argName);
+            char *argType = strsGetLastToken(buffs, typeDeclearation, ':');
+            printInfo("argType", argType);
+            obj_setStr(self, strsAppend(buffs, strsAppend(buffs, methodObjPath, "."), argName), argType);
+        }
     }
-    obj_setStr(self, strsAppend(buffs, methodObjPath, ".typeList"), typeList);
-    int argNum = strCountSign(typeList, ',') + 1;
-    char *typeListBuff = strsCopy(buffs, typeList);
-    for (int i = 0; i < argNum; i++)
-    {
-        char *typeDeclearation = strsPopToken(buffs, typeListBuff, ',');
-        printInfo("typeDeclearation", typeDeclearation);
-        char *argName = strsGetFirstToken(buffs, typeDeclearation, ':');
-        printInfo("argName", argName);
-        char *argType = strsGetLastToken(buffs, typeDeclearation, ':');
-        printInfo("argType", argType);
-        obj_setStr(self, strAppend(strsAppend(buffs, methodObjPath, "."), argName), argType);
-    }
+    goto exit;
+exit:
+    args_deinit(buffs);
+    return;
 }
 
 int Compiler_analizeLine(MimiObj *self, char *line)
 {
-    Args *buffs = New_args(NULL);
     int res = 0;
     if (strIsContain(line, '#'))
     {
@@ -197,19 +202,19 @@ int Compiler_analizeLine(MimiObj *self, char *line)
 
     if (strIsStartWith(line, "class "))
     {
-        Compiler_analizeClass(self, line, buffs);
+        Compiler_analizeClass(self, line);
         goto exit;
     }
 
     if (strIsStartWith(line, "    def "))
     {
-        Compiler_analizeDef(self, line, buffs);
+        Compiler_analizeDef(self, line);
         goto exit;
     }
 
     if (strIsStartWith(line, "        pass"))
     {
-        Compiler_analizePass(self, line, buffs);
+        Compiler_analizePass(self, line);
         goto exit;
     }
 
@@ -219,7 +224,6 @@ int Compiler_analizeLine(MimiObj *self, char *line)
         goto exit;
     }
 exit:
-    args_deinit(buffs);
     return res;
 }
 
