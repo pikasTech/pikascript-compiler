@@ -20,6 +20,14 @@ void PyObj_makeInlcude(MimiObj *self, FILE *fp)
     args_deinit(buffs);
 }
 
+char *PyObj_getInclude(MimiObj *self, Args *buffs)
+{
+    char *className = obj_getStr(self, "class");
+    char *inlcudeCmd = args_getBuff(buffs, 512);
+    sprintf(inlcudeCmd, "#include \"%s.h\"\n", className);
+    return inlcudeCmd;
+}
+
 void PyObj_makeNewObj(MimiObj *self, FILE *fp)
 {
     Args *buffs = New_strBuff();

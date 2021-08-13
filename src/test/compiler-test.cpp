@@ -121,7 +121,6 @@ TEST(compiler_test, analizeFile5)
     EXPECT_EQ(DMEMS.blk_num, mem);
 }
 
-
 TEST(compiler_test, build2)
 {
     MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
@@ -190,4 +189,17 @@ TEST(compiler_test, build1_mem)
 {
     EXPECT_EQ(DMEMS.blk_num, mem);
     mem = DMEMS.blk_num;
+}
+
+TEST(compiler_test, getImport)
+{
+    MimiObj *msc = newRootObj((char *)"msc", New_Compiler);
+    Compiler_analizeLine(msc, (char *)"class Compiler(SysObj):");
+    Compiler_analizeLine(msc, (char *)"    PyClass()");
+    MimiObj *Compiler = obj_getObj(msc, (char *)"Compiler", 0);
+    Args *buffs = New_args(NULL);
+    char *allInclude = PyClass_getImportInclude(Compiler, buffs);
+    printf("all inlcude is :%s\r\n", allInclude);
+    args_deinit(buffs);
+    obj_deinit(msc);
 }

@@ -8,4 +8,5 @@ MimiObj *New_PyClass(Args *args);
 void PyClass_makeHead(MimiObj *self, char * path);
 void PyClass_makeApi(MimiObj *self, char * path);
 void PyClass_setSuper(MimiObj *self, char * superClassName);
+char *PyClass_getImportInclude(MimiObj *pyClass, Args *buffs);
 #endif

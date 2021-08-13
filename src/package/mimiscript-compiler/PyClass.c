@@ -15,7 +15,6 @@ void PyClass_setSuper(MimiObj *self, char *superClassName)
     obj_setStr(self, "superClassName", superClassName);
 }
 
-
 int __foreach_PyClass_makeMethodFun(Arg *argEach, Args *handleArgs)
 {
     FILE *fp = args_getPtr(handleArgs, "fp");
@@ -108,6 +107,32 @@ int __foreach_PyClass_makeImportInclude(Arg *argEach, Args *handleArgs)
     }
     return 0;
 }
+
+int __foreach_PyClass_getImportInclude(Arg *argEach, Args *handleArgs)
+{
+    char *type = arg_getType(argEach);
+    if (strEqu(type, "_class-PyObj"))
+    {
+        Args *buffs = args_getPtr(handleArgs, "buffs");
+        char *allInclude = args_getStr(handleArgs, "allInclude");
+        MimiObj *pyObj = arg_getPtr(argEach);
+        char *thisInclude = PyObj_getInclude(pyObj, buffs);
+        allInclude = strsAppend(buffs, allInclude, thisInclude);
+    }
+    return 0;
+}
+
+char *PyClass_getImportInclude(MimiObj *pyClass, Args *buffs)
+{
+    Args *handleArgs = New_args(NULL);
+    args_setPtr(handleArgs, "buffs", buffs);
+    args_setStr(handleArgs, "allInclude", "");
+    args_foreach(pyClass->attributeList, __foreach_PyClass_getImportInclude, handleArgs);
+    char *allInclude = args_getStr(handleArgs, "allInclude");
+    args_deinit(handleArgs);
+    return allInclude;
+}
+
 static void PyClass_makeImportInclude(MimiObj *pyClass, FILE *fp)
 {
     Args *handleArgs = New_args(NULL);
