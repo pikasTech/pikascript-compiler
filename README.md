@@ -1,5 +1,7 @@
 # mimiscript-compiler
 
+此仓库停止更新，迁移至 [pikascript 主仓库](https://github.com/mimilib/pikascript)
+
 ## compile python to mimsicript C project
 
 ## linux下测试mimiscript内核(推荐ubuntu20.04)：
